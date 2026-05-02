@@ -1,0 +1,6 @@
+{
+  "name": "PayDish",
+  "description": "Scannez. Commandez. Payez. L'application de commande et paiement en restaurant n°1 au Bénin.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": []
+}
