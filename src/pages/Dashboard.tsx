@@ -24,7 +24,8 @@ import {
   Clock,
   QrCode,
   TrendingUp,
-  MoreVertical
+  MoreVertical,
+  Sparkles
 } from 'lucide-react';
 import { RESTAURANTS, MOCK_ORDERS } from '../data';
 import { Link } from 'react-router-dom';
