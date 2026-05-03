@@ -137,70 +137,99 @@ export default function Dashboard() {
                    <div className="xl:col-span-2 card-premium bg-card-bg border-none shadow-2xl p-12 overflow-hidden relative group">
                       <div className="flex items-center justify-between mb-12 relative z-10">
                          <div>
-                            <h3 className="text-2xl font-black text-ink tracking-tight">Flux de revenus</h3>
-                            <p className="text-[10px] text-ink-muted font-black uppercase tracking-[0.2em] mt-1">Analyse des 7 derniers jours</p>
+                            <h3 className="text-2xl font-black text-ink tracking-tight">Analyse de Performance</h3>
+                            <p className="text-[10px] text-ink-muted font-black uppercase tracking-[0.2em] mt-1">Revenus hebdomadaires (FCFA)</p>
                          </div>
-                         <div className="flex items-center gap-6">
-                            <div className="flex items-center gap-2">
-                               <div className="w-2 h-2 rounded-full bg-gold"></div>
-                               <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">Semaine actuelle</span>
+                         <div className="flex items-center gap-8">
+                            <div className="flex items-center gap-3">
+                               <div className="w-3 h-1 bg-gold rounded-full"></div>
+                               <span className="text-[10px] font-black text-ink uppercase tracking-widest">Cette semaine</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                               <div className="w-2 h-2 rounded-full bg-surface-2"></div>
-                               <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">Précédente</span>
+                            <div className="flex items-center gap-3">
+                               <div className="w-3 h-1 bg-ink/10 dark:bg-white/10 rounded-full"></div>
+                               <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">Semaine dernière</span>
                             </div>
                          </div>
                       </div>
 
-                      <div className="relative h-64 w-full">
-                         {/* SVG Graph Component */}
-                         <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 1000 200">
-                            {/* Grid Lines */}
-                            {[0, 50, 100, 150, 200].map((y) => (
-                              <line key={y} x1="0" y1={y} x2="1000" y2={y} stroke="currentColor" strokeOpacity="0.05" />
-                            ))}
-                            
-                            {/* Gradient Fill */}
-                            <defs>
-                               <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.2" />
-                                  <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
-                               </linearGradient>
-                            </defs>
+                      <div className="relative h-72 w-full flex gap-6">
+                         {/* Y-Axis Labels */}
+                         <div className="flex flex-col justify-between text-[9px] font-black text-ink-muted uppercase tracking-widest pb-8 pt-2">
+                            <span>400k</span>
+                            <span>300k</span>
+                            <span>200k</span>
+                            <span>100k</span>
+                            <span>0</span>
+                         </div>
 
-                            {/* Line Path */}
-                            <motion.path
-                               initial={{ pathLength: 0 }}
-                               animate={{ pathLength: 1 }}
-                               transition={{ duration: 2, ease: "easeInOut" }}
-                               d="M0,150 C100,140 150,180 250,130 C350,80 450,150 550,110 C650,70 750,120 850,40 L1000,60"
-                               fill="none"
-                               stroke="#C9A84C"
-                               strokeWidth="4"
-                               strokeLinecap="round"
-                            />
-                            <path
-                               d="M0,150 C100,140 150,180 250,130 C350,80 450,150 550,110 C650,70 750,120 850,40 L1000,60 L1000,200 L0,200 Z"
-                               fill="url(#chartGradient)"
-                            />
+                         <div className="flex-1 relative">
+                            {/* SVG Graph Component */}
+                            <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 1000 200">
+                               {/* Horizontal Grid Lines */}
+                               {[0, 50, 100, 150, 200].map((y) => (
+                                 <line key={y} x1="0" y1={y} x2="1000" y2={y} stroke="currentColor" strokeOpacity="0.03" strokeWidth="1" />
+                               ))}
+                               
+                               {/* Gradient Fill */}
+                               <defs>
+                                  <linearGradient id="realChartGradient" x1="0" y1="0" x2="0" y2="1">
+                                     <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.15" />
+                                     <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+                                  </linearGradient>
+                               </defs>
 
-                            {/* Data Points */}
-                            {[
-                               {x: 0, y: 150}, {x: 250, y: 130}, {x: 550, y: 110}, {x: 850, y: 40}
-                            ].map((p, i) => (
-                              <circle key={i} cx={p.x} cy={p.y} r="6" fill="#1B3A6B" stroke="#C9A84C" strokeWidth="3" />
-                            ))}
-                         </svg>
-                      </div>
+                               {/* Previous Week Line (Faded & Dotted) */}
+                               <path
+                                  d="M0,160 C100,170 150,150 250,160 C350,170 450,140 550,150 C650,160 750,130 850,140 L1000,150"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeOpacity="0.1"
+                                  strokeWidth="2"
+                                  strokeDasharray="4 4"
+                               />
 
-                      <div className="flex justify-between mt-8 text-[10px] font-black text-ink-muted uppercase tracking-[0.3em]">
-                         <span>Lun</span>
-                         <span>Mar</span>
-                         <span>Mer</span>
-                         <span>Jeu</span>
-                         <span>Ven</span>
-                         <span>Sam</span>
-                         <span>Dim</span>
+                               {/* Current Week Gradient Area */}
+                               <path
+                                  d="M0,140 C80,135 150,160 220,110 C300,50 380,120 460,90 C540,60 620,110 700,50 C780,-10 880,40 1000,20 L1000,200 L0,200 Z"
+                                  fill="url(#realChartGradient)"
+                               />
+
+                               {/* Current Week Line (Primary) */}
+                               <motion.path
+                                  initial={{ pathLength: 0 }}
+                                  animate={{ pathLength: 1 }}
+                                  transition={{ duration: 1.5, ease: "easeOut" }}
+                                  d="M0,140 C80,135 150,160 220,110 C300,50 380,120 460,90 C540,60 620,110 700,50 C780,-10 880,40 1000,20"
+                                  fill="none"
+                                  stroke="#C9A84C"
+                                  strokeWidth="3"
+                                  strokeLinecap="round"
+                               />
+
+                               {/* Interactive Markers (Data Points) */}
+                               {[
+                                  {x: 220, y: 110, val: '145k'}, 
+                                  {x: 460, y: 90, val: '185k'}, 
+                                  {x: 700, y: 50, val: '310k'}, 
+                                  {x: 1000, y: 20, val: '385k'}
+                               ].map((p, i) => (
+                                 <g key={i} className="group/marker cursor-pointer">
+                                    <circle cx={p.x} cy={p.y} r="4" fill="#C9A84C" />
+                                    <circle cx={p.x} cy={p.y} r="12" fill="#C9A84C" fillOpacity="0" className="hover:fill-opacity-10 transition-all" />
+                                 </g>
+                               ))}
+                            </svg>
+
+                            <div className="flex justify-between mt-8 text-[9px] font-black text-ink-muted uppercase tracking-[0.4em]">
+                               <span>Lun</span>
+                               <span>Mar</span>
+                               <span>Mer</span>
+                               <span>Jeu</span>
+                               <span>Ven</span>
+                               <span>Sam</span>
+                               <span>Dim</span>
+                            </div>
+                         </div>
                       </div>
                    </div>
 
