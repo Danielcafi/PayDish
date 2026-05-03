@@ -3,20 +3,63 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { QrCode, Mail, Lock, Phone, User, Store, MapPin, ChevronRight, Upload, Clock, Plus, Trash2, Eye } from 'lucide-react';
+import { 
+  QrCode, 
+  Mail, 
+  Lock, 
+  Phone, 
+  User, 
+  Store, 
+  MapPin, 
+  ChevronRight, 
+  Upload, 
+  Clock, 
+  Plus, 
+  Trash2, 
+  ChevronLeft,
+  CheckCircle2,
+  Sparkles
+} from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import ThemeToggle from '../lib/ThemeToggle';
 
 export default function AuthPage() {
   const [searchParams] = useSearchParams();
   const [isSignup, setIsSignup] = useState(searchParams.get('signup') === 'true');
   const [loading, setLoading] = useState(false);
-  const [onboardingStep, setOnboardingStep] = useState(0); // 0: Auth, 1: Restaurant Info, 2: Menu, 3: QR Codes
+  const [onboardingStep, setOnboardingStep] = useState(0); 
   const navigate = useNavigate();
+
+  // Input states
+  const [phone, setPhone] = useState('+229 ');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.startsWith('+229 ')) {
+      setPhone(value);
+    } else if (value.length < 5) {
+      setPhone('+229 ');
+    }
+  };
+
+  const validateEmail = (val: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmail(val);
+    if (val.length > 0) {
+      setEmailError(!regex.test(val));
+    } else {
+      setEmailError(false);
+    }
+  };
 
   const handleAuthSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (emailError) return;
+    
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -29,85 +72,98 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      <Link to="/" className="flex items-center gap-2 mb-12">
-        <div className="bg-brand-green p-1.5 rounded-lg">
-          <QrCode className="text-white w-8 h-8" />
-        </div>
-        <span className="text-3xl font-bold tracking-tight text-brand-dark">PayDish</span>
+    <div className="min-h-screen bg-surface flex flex-col items-center justify-center p-6 relative overflow-hidden transition-colors duration-500">
+      {/* Floating Theme Toggle */}
+      <div className="absolute top-12 right-12 z-50">
+        <ThemeToggle />
+      </div>
+
+      {/* Background Orbs */}
+      <div className="hero-orb bg-gold w-[500px] h-[500px] -top-20 -right-20"></div>
+      <div className="hero-orb bg-navy w-[600px] h-[600px] -bottom-20 -left-20"></div>
+
+      <Link to="/" className="flex flex-col items-center gap-4 mb-16 group z-10">
+        <img src="/logo.png" alt="PayDish Logo" className="h-28 w-auto group-hover:scale-105 transition-transform duration-500" />
+        <span className="text-4xl font-black tracking-tighter text-ink uppercase">PayDish</span>
       </Link>
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-[500px] z-10">
         <AnimatePresence mode="wait">
           {onboardingStep === 0 && (
             <motion.div
               key="auth-form"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="bg-white p-8 rounded-3xl shadow-soft"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.05 }}
+              className="card-premium bg-card-bg border-none shadow-2xl p-10"
             >
-              <div className="flex bg-gray-100 p-1 rounded-xl mb-8">
+              <div className="flex bg-surface-2 p-1.5 rounded-2xl mb-12 border border-border">
                 <button
                   onClick={() => setIsSignup(false)}
-                  className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${!isSignup ? 'bg-white text-brand-dark shadow-sm' : 'text-gray-500'}`}
+                  className={`flex-1 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${!isSignup ? 'bg-gold text-navy shadow-lg' : 'text-ink-muted hover:text-ink'}`}
                 >
                   Connexion
                 </button>
                 <button
                   onClick={() => setIsSignup(true)}
-                  className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${isSignup ? 'bg-white text-brand-dark shadow-sm' : 'text-gray-500'}`}
+                  className={`flex-1 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${isSignup ? 'bg-gold text-navy shadow-lg' : 'text-ink-muted hover:text-ink'}`}
                 >
                   Inscription
                 </button>
               </div>
 
-              <h2 className="text-2xl font-bold text-center mb-2">
-                {isSignup ? 'Devenir partenaire' : 'Bon retour !'}
-              </h2>
-              <p className="text-gray-500 text-center mb-8 text-sm">
-                {isSignup ? "Commencez l'aventure PayDish aujourd'hui." : 'Accédez à votre tableau de bord.'}
-              </p>
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-black text-ink mb-2 tracking-tighter">
+                  {isSignup ? 'Devenir Partenaire' : 'Bon retour'}
+                </h2>
+                <p className="text-ink-muted font-bold text-xs">
+                  {isSignup ? "Rejoignez l'élite de la restauration béninoise." : 'Accédez à votre espace restaurateur.'}
+                </p>
+              </div>
 
-              <form onSubmit={handleAuthSubmit} className="space-y-4">
+              <form onSubmit={handleAuthSubmit} className="space-y-5">
                 {isSignup && (
                   <>
-                    <div className="relative">
-                      <Store className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <input required type="text" placeholder="Nom du restaurant" className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none transition-all" />
+                    <div className="relative group">
+                      <Store className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-muted group-focus-within:text-gold transition-colors" size={20} />
+                      <input required type="text" placeholder="Nom de l'établissement" className="input-premium input-with-icon" />
                     </div>
-                    <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <input required type="text" placeholder="Prénom et Nom du gérant" className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none transition-all" />
-                    </div>
-                    <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <input required type="tel" placeholder="+229 Numéro de téléphone" className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none transition-all" />
+                    <div className="relative group">
+                      <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-muted group-focus-within:text-gold transition-colors" size={20} />
+                      <input 
+                        required 
+                        type="tel" 
+                        value={phone}
+                        onChange={handlePhoneChange}
+                        placeholder="+229 Numéro de téléphone" 
+                        className="input-premium input-with-icon" 
+                      />
                     </div>
                   </>
                 )}
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input required type="email" placeholder="Email" className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none transition-all" />
+                <div className="relative group">
+                  <Mail className={`absolute left-6 top-1/2 -translate-y-1/2 transition-colors ${emailError ? 'text-danger' : 'text-ink-muted group-focus-within:text-gold'}`} size={20} />
+                  <input 
+                    required 
+                    type="email" 
+                    value={email}
+                    onChange={(e) => validateEmail(e.target.value)}
+                    placeholder="Adresse email" 
+                    className={`input-premium input-with-icon ${emailError ? 'border-danger! ring-4 ring-danger/10' : ''}`} 
+                  />
+                  {emailError && <p className="text-[10px] font-bold text-danger mt-2 ml-2">Veuillez entrer une adresse email valide</p>}
                 </div>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input required type="password" placeholder="Mot de passe" className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none transition-all" />
+                <div className="relative group">
+                  <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-muted group-focus-within:text-gold transition-colors" size={20} />
+                  <input required type="password" placeholder="Mot de passe" className="input-premium input-with-icon" />
                 </div>
 
-                {!isSignup && (
-                  <div className="flex items-center justify-between text-xs">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input type="checkbox" className="rounded text-brand-green w-4 h-4" />
-                      <span className="text-gray-600 font-medium tracking-tight">Se souvenir de moi</span>
-                    </label>
-                    <a href="#" className="text-brand-green font-bold hover:underline">Mot de passe oublié ?</a>
-                  </div>
-                )}
-
-                <button disabled={loading} className="w-full bg-brand-green text-white py-4 rounded-xl font-bold shadow-lg shadow-brand-green/20 hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
-                  {loading ? 'Traitement...' : isSignup ? 'Créer mon compte' : 'Me connecter'}
-                  {!loading && <ChevronRight className="w-5 h-5" />}
+                <button 
+                  disabled={loading || emailError} 
+                  className="w-full btn-gold py-6 flex items-center justify-center gap-4 mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? 'Chargement..' : isSignup ? 'Suivant' : 'Se connecter'}
+                  {!loading && <ChevronRight size={20} />}
                 </button>
               </form>
             </motion.div>
@@ -117,7 +173,10 @@ export default function AuthPage() {
             <OnboardingStep1 onNext={() => setOnboardingStep(2)} />
           )}
           {onboardingStep === 2 && (
-            <OnboardingStep2 onNext={() => setOnboardingStep(3)} />
+            <OnboardingStep2 
+              onNext={() => setOnboardingStep(3)} 
+              onBack={() => setOnboardingStep(1)} 
+            />
           )}
           {onboardingStep === 3 && (
             <OnboardingStep3 onFinish={() => navigate('/dashboard')} />
@@ -130,108 +189,90 @@ export default function AuthPage() {
 
 function OnboardingStep1({ onNext }: { onNext: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white p-8 rounded-3xl shadow-soft">
-      <h2 className="text-2xl font-bold mb-6">Étape 1 — Profil du restaurant</h2>
-      <div className="space-y-6">
+    <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} className="card-premium bg-card-bg border-none shadow-2xl">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-black text-ink mb-4 tracking-tighter">Profil du Restaurant</h2>
+        <div className="w-24 h-1 bg-gold mx-auto rounded-full"></div>
+      </div>
+      <div className="space-y-8">
         <div className="flex flex-col items-center">
-          <div className="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-300 relative overflow-hidden group cursor-pointer hover:border-brand-green transition-colors">
-            <Upload className="text-gray-400 group-hover:text-brand-green" />
-            <div className="absolute bottom-0 left-0 right-0 bg-brand-green text-white text-[10px] font-bold py-1 text-center opacity-0 group-hover:opacity-100 transition-opacity">
-              LOGO
+          <div className="w-40 h-40 bg-surface-2 rounded-[2.5rem] flex items-center justify-center border-2 border-dashed border-border group cursor-pointer hover:border-gold transition-all duration-500 relative overflow-hidden">
+            <Upload className="text-ink-muted group-hover:text-gold group-hover:scale-110 transition-all" size={40} />
+            <div className="absolute inset-0 bg-navy/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+               <span className="text-[10px] font-black text-gold uppercase tracking-widest">Modifier le Logo</span>
             </div>
           </div>
-          <span className="text-xs text-gray-500 mt-2">Cliquez pour charger votre logo</span>
         </div>
-        <textarea placeholder="Brève description de votre restaurant..." className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-brand-green/20 h-24"></textarea>
-        <div className="relative">
-          <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input type="text" placeholder="Adresse complète" className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl" />
-        </div>
-        <div className="relative">
-          <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input type="text" placeholder="Horaires d'ouverture (ex: 11h - 23h)" className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-xl" />
-        </div>
-        <button onClick={onNext} className="w-full bg-brand-green text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2">
-          Suivant
-          <ChevronRight className="w-5 h-5" />
+        
+        <input type="text" placeholder="Adresse physique (Google Maps)" className="input-premium" />
+        <textarea placeholder="Description courte de votre établissement..." className="input-premium min-h-[140px] pt-5"></textarea>
+
+        <button onClick={onNext} className="w-full btn-gold py-6 flex items-center justify-center gap-4">
+          Suivant <ChevronRight size={20} />
         </button>
       </div>
     </motion.div>
   );
 }
 
-function OnboardingStep2({ onNext }: { onNext: () => void }) {
-  const [plates, setPlates] = useState([{ id: 1, name: '', price: '' }]);
-  
+function OnboardingStep2({ onNext, onBack }: { onNext: () => void, onBack: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white p-6 rounded-3xl shadow-soft">
-      <h2 className="text-2xl font-bold mb-4">Étape 2 — Créer le menu</h2>
-      <p className="text-gray-500 text-sm mb-6">Ajoutez vos premiers plats pour commencer. Vous pourrez en ajouter plus tard.</p>
+    <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} className="card-premium bg-card-bg border-none shadow-2xl">
+      <button onClick={onBack} className="text-[10px] font-black text-ink-muted uppercase tracking-widest flex items-center gap-2 mb-10 hover:text-gold transition-colors">
+        <ChevronLeft size={16} /> Retour
+      </button>
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-black text-ink mb-4 tracking-tighter">Votre Menu</h2>
+        <p className="text-ink-muted font-bold text-sm">Ajoutez vos plats signatures.</p>
+      </div>
       
-      <div className="space-y-4 mb-8 max-h-[300px] overflow-y-auto p-1">
-        {plates.map((plate, index) => (
-          <div key={plate.id} className="p-4 bg-gray-50 rounded-2xl border border-gray-100 relative group">
-            <div className="grid grid-cols-2 gap-4">
-              <input placeholder="Nom du plat" className="col-span-1 p-2 bg-white rounded-lg border border-gray-200 text-sm" />
-              <input placeholder="Prix (FCFA)" className="col-span-1 p-2 bg-white rounded-lg border border-gray-200 text-sm" />
+      <div className="space-y-6 mb-12">
+        {[1, 2].map(i => (
+          <div key={i} className="p-6 bg-surface-2 rounded-2xl border border-border">
+            <div className="flex justify-between items-center">
+               <div className="h-4 w-40 bg-ink opacity-10 rounded-full"></div>
+               <div className="h-4 w-20 bg-gold/20 rounded-full"></div>
             </div>
-            {index > 0 && (
-              <button onClick={() => setPlates(plates.filter(p => p.id !== plate.id))} className="absolute -right-2 -top-2 bg-red-100 text-red-500 p-1.5 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                <Trash2 className="w-4 h-4" />
-              </button>
-            )}
           </div>
         ))}
+        <button className="w-full py-5 border-2 border-dashed border-border rounded-2xl text-[10px] font-black text-ink-muted uppercase tracking-widest hover:border-gold hover:text-gold transition-all">
+          <Plus size={20} className="mx-auto mb-2" /> Ajouter un plat
+        </button>
       </div>
 
-      <button
-        onClick={() => setPlates([...plates, { id: Date.now(), name: '', price: '' }])}
-        className="w-full py-3 border-2 border-dashed border-gray-200 text-gray-500 rounded-xl mb-6 flex items-center justify-center gap-2 hover:border-brand-green hover:text-brand-green transition-colors font-semibold"
-      >
-        <Plus className="w-5 h-5" />
-        Ajouter un plat
-      </button>
-
-      <button onClick={onNext} className="w-full bg-brand-green text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-brand-green/20">
-        Suivant
-        <ChevronRight className="w-5 h-5" />
+      <button onClick={onNext} className="w-full btn-gold py-6 flex items-center justify-center gap-4">
+        Suivant <ChevronRight size={20} />
       </button>
     </motion.div>
   );
 }
 
 function OnboardingStep3({ onFinish }: { onFinish: () => void }) {
-  const [count, setCount] = useState(10);
-  
   return (
-    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white p-8 rounded-3xl shadow-soft text-center">
-      <div className="w-20 h-20 bg-brand-green/10 rounded-3xl flex items-center justify-center mx-auto mb-6">
-        <QrCode className="text-brand-green w-10 h-10" />
+    <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} className="card-premium bg-card-bg border-none shadow-2xl text-center">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-black text-ink mb-4 tracking-tighter">Félicitations !</h2>
+        <p className="text-ink-muted font-bold text-sm">Votre restaurant est prêt à briller.</p>
       </div>
-      <h2 className="text-2xl font-bold mb-4">Étape 3 — Générer les QR codes</h2>
-      <p className="text-gray-500 text-sm mb-8">Déterminez le nombre de tables dans votre restaurant pour générer vos supports PayDish.</p>
       
-      <div className="flex items-center justify-center gap-8 mb-10">
-        <button onClick={() => setCount(Math.max(1, count - 1))} className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-xl font-bold">-</button>
-        <div className="text-4xl font-extrabold">{count}</div>
-        <button onClick={() => setCount(count + 1)} className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-xl font-bold">+</button>
+      <div className="w-32 h-32 bg-gold/10 text-gold rounded-full flex items-center justify-center mx-auto mb-12">
+        <CheckCircle2 size={64} />
       </div>
 
-      <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 mb-8 flex items-center gap-4 text-left">
-        <div className="w-12 h-12 bg-white rounded-lg p-2 border border-brand-green/30">
-          <QrCode className="w-full h-full text-brand-dark" />
+      <div className="p-8 bg-navy text-white rounded-3xl mb-12 flex items-center gap-6 text-left border border-white/5 shadow-2xl">
+        <div className="w-16 h-16 bg-white rounded-2xl p-3">
+          <QrCode className="w-full h-full text-navy" />
         </div>
         <div>
-          <div className="font-bold text-sm">Table 7 — PayDish</div>
-          <div className="text-[10px] text-gray-500 font-medium tracking-tight">Prêt pour impression PDF</div>
+          <p className="text-xs font-black uppercase tracking-widest text-gold mb-1">Badge PayDish</p>
+          <p className="text-lg font-black tracking-tight">QR de Table activé</p>
         </div>
-        <button className="ml-auto text-brand-green font-bold text-xs uppercase tracking-wider">Aperçu</button>
       </div>
 
-      <button onClick={onFinish} className="w-full bg-brand-green text-white py-4 rounded-xl font-bold mb-4 shadow-lg shadow-brand-green/20">
-        Terminer et accéder au tableau de bord
+      <button onClick={onFinish} className="w-full btn-gold py-6 flex items-center justify-center gap-4 mb-6">
+        Accéder à mon Dashboard <Sparkles size={20} />
       </button>
-      <p className="text-[10px] text-gray-400 font-medium tracking-widest uppercase">Propulsé par PayDish Bénin</p>
+      <p className="text-[10px] text-ink-muted font-black uppercase tracking-widest">Propulsé par PayDish Bénin</p>
     </motion.div>
   );
 }

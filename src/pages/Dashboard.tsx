@@ -9,7 +9,6 @@ import {
   LayoutDashboard, 
   ShoppingBag, 
   UtensilsCrossed, 
-  Monitor, 
   Settings, 
   ChevronRight, 
   Plus, 
@@ -22,46 +21,54 @@ import {
   Bell,
   Search,
   CheckCircle2,
-  Clock
+  Clock,
+  QrCode,
+  TrendingUp,
+  MoreVertical
 } from 'lucide-react';
 import { RESTAURANTS, MOCK_ORDERS } from '../data';
 import { Link } from 'react-router-dom';
+import ThemeToggle from '../lib/ThemeToggle';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const restaurant = RESTAURANTS[0];
   
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-surface flex selection:bg-gold/30 selection:text-navy transition-colors duration-500">
       {/* Sidebar - Desktop */}
-      <aside className="w-72 bg-brand-dark hidden lg:flex flex-col text-white">
-        <div className="p-8">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="bg-brand-green p-1.5 rounded-lg">
-              <QrCodeIcon className="text-white w-6 h-6" />
-            </div>
-            <span className="text-2xl font-bold tracking-tight">PayDish</span>
+      <aside className="w-80 bg-navy dark:bg-card-bg hidden lg:flex flex-col text-white relative z-20 shadow-2xl transition-colors duration-500 border-r border-white/5 dark:border-border">
+        <div className="p-12">
+          <Link to="/" className="flex flex-col gap-4 group">
+            <img src="/logo.png" alt="PayDish Logo" className="h-20 w-auto group-hover:scale-105 transition-transform" />
+            <span className="text-3xl font-black tracking-tighter text-white">PayDish</span>
           </Link>
         </div>
 
-        <nav className="flex-1 px-4 space-y-1">
+        <nav className="flex-1 px-8 space-y-3 mt-4">
           {[
             { id: 'overview', icon: LayoutDashboard, label: 'Vue d\'ensemble' },
             { id: 'orders', icon: ShoppingBag, label: 'Commandes', badge: '5' },
-            { id: 'menu', icon: UtensilsCrossed, label: 'Menu' },
+            { id: 'menu', icon: UtensilsCrossed, label: 'Menu Digital' },
             { id: 'tables', icon: TableIcon, label: 'Tables & QR' },
-            { id: 'payments', icon: CreditCard, label: 'Paiements' },
+            { id: 'payments', icon: CreditCard, label: 'Transactions' },
             { id: 'settings', icon: Settings, label: 'Paramètres' }
           ].map(item => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm ${activeTab === item.id ? 'bg-brand-green text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+              className={`w-full flex items-center gap-5 px-5 py-4 rounded-2xl transition-all duration-300 font-black text-xs uppercase tracking-widest ${
+                activeTab === item.id 
+                ? 'bg-gold text-navy shadow-lg shadow-gold/20' 
+                : 'text-white/40 hover:text-white hover:bg-white/5 dark:text-ink-muted dark:hover:text-gold'
+              }`}
             >
-              <item.icon className="w-5 h-5" />
+              <item.icon size={20} />
               {item.label}
               {item.badge && (
-                <span className={`ml-auto px-2 py-0.5 rounded-full text-[10px] font-bold ${activeTab === item.id ? 'bg-white text-brand-green' : 'bg-brand-green text-white'}`}>
+                <span className={`ml-auto px-2 py-0.5 rounded-full text-[10px] font-black ${
+                  activeTab === item.id ? 'bg-navy text-white' : 'bg-gold text-navy'
+                }`}>
                   {item.badge}
                 </span>
               )}
@@ -69,148 +76,153 @@ export default function Dashboard() {
           ))}
         </nav>
 
-        <div className="p-4 mt-auto">
-          <div className="bg-white/5 p-4 rounded-2xl flex items-center gap-3">
-            <div className="w-10 h-10 bg-brand-green rounded-xl flex items-center justify-center font-bold text-lg">A</div>
+        <div className="p-8 mt-auto">
+          <div className="bg-white/5 dark:bg-surface-2 border border-white/10 dark:border-border p-6 rounded-[2rem] flex items-center gap-4">
+            <div className="w-12 h-12 bg-gold rounded-2xl flex items-center justify-center font-black text-navy shadow-xl">A</div>
             <div className="flex-1 overflow-hidden">
-              <div className="text-sm font-bold truncate">Adjoua Koffi</div>
-              <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest truncate">Le Bon Goût</div>
+              <div className="text-sm font-black truncate text-white dark:text-ink">Adjoua Koffi</div>
+              <div className="text-[10px] text-white/30 dark:text-ink-muted font-black uppercase tracking-widest truncate">Le Bon Goût</div>
             </div>
-            <button className="text-gray-500 hover:text-red-400 transition-colors">
-              <LogOut className="w-5 h-5" />
+            <button className="text-white/20 hover:text-danger transition-colors">
+              <LogOut size={20} />
             </button>
           </div>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 h-screen overflow-y-auto w-full">
+      <main className="flex-1 h-screen overflow-y-auto w-full relative z-10 custom-scrollbar bg-surface transition-colors duration-500">
         {/* Header */}
-        <header className="sticky top-0 z-30 bg-gray-50/80 backdrop-blur-md px-4 sm:px-8 py-4 flex items-center justify-between">
+        <header className="sticky top-0 z-30 bg-surface/80 backdrop-blur-xl px-12 py-8 flex items-center justify-between border-b border-border transition-colors duration-500">
           <div>
-            <h1 className="text-2xl font-black text-brand-dark">Bonjour, Adjoua !</h1>
-            <p className="text-gray-500 text-sm font-medium">Samedi 2 Mai 2026</p>
+            <h1 className="text-3xl font-black text-ink tracking-tighter">Tableau de bord</h1>
+            <p className="text-ink-muted text-[10px] font-black uppercase tracking-[0.3em] mt-1">Samedi 2 Mai 2026</p>
           </div>
           <div className="flex items-center gap-4">
-            <button className="p-2.5 bg-white rounded-xl border border-gray-200 text-gray-400 relative">
-              <Bell className="w-5 h-5" />
-              <div className="absolute top-2 right-2 w-2 h-2 bg-brand-orange rounded-full border-2 border-white"></div>
+            <ThemeToggle />
+            <div className="w-[1px] h-8 bg-border mx-2"></div>
+            <button className="p-4 bg-card-bg rounded-2xl border border-border text-ink-muted relative hover:text-gold transition-colors shadow-sm">
+              <Bell size={22} />
+              <div className="absolute top-3.5 right-3.5 w-2.5 h-2.5 bg-danger rounded-full border-2 border-surface"></div>
             </button>
-            <button className="bg-brand-green text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-opacity shadow-lg shadow-brand-green/20">
-              <Plus className="w-5 h-5" />
-              <span className="hidden sm:inline">Nouvelle commande</span>
+            <button className="btn-gold px-8 py-4 rounded-2xl flex items-center gap-3">
+              <Plus size={20} />
+              NOUVELLE COMMANDE
             </button>
           </div>
         </header>
 
-        <div className="px-4 sm:px-8 pb-8 space-y-8">
+        <div className="px-12 pb-16 space-y-12">
           {activeTab === 'overview' && (
             <>
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mt-12">
                 {[
-                  { label: "Commandes aujourd'hui", value: "47", diff: "+12%", up: true, icon: ShoppingBag, color: "blue" },
-                  { label: "Chiffre d'affaires", value: "385k", sub: "FCFA", diff: "+8%", up: true, icon: CreditCard, color: "brand-green" },
-                  { label: "Ticket moyen", value: "8 191", sub: "FCFA", diff: "-3%", up: false, icon: Users, color: "purple" },
-                  { label: "Tables actives", value: "12/15", diff: "80%", up: true, icon: TableIcon, color: "brand-orange" }
+                  { label: "Ventes jour", value: "47", diff: "+12%", up: true, icon: ShoppingBag },
+                  { label: "Chiffre d'affaires", value: "385k", diff: "+8%", up: true, icon: TrendingUp },
+                  { label: "Clientèle", value: "112", diff: "-3%", up: false, icon: Users },
+                  { label: "Taux d'occupation", value: "82%", diff: "+5%", up: true, icon: TableIcon }
                 ].map((stat, i) => (
-                  <div key={i} className="bg-white p-6 rounded-[28px] shadow-soft border border-gray-100 flex flex-col justify-between">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className={`p-3 rounded-2xl bg-brand-dark/5 text-brand-dark`}>
-                        <stat.icon className="w-6 h-6" />
+                  <div key={i} className="card-premium hover-lift border-none shadow-xl bg-card-bg">
+                    <div className="flex items-start justify-between mb-8">
+                      <div className="w-14 h-14 rounded-2xl bg-surface-2 flex items-center justify-center text-gold border border-border">
+                        <stat.icon size={28} />
                       </div>
-                      <div className={`flex items-center gap-0.5 text-xs font-bold ${stat.up ? 'text-brand-green' : 'text-red-500'}`}>
-                        {stat.up ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownLeft className="w-3 h-3" />}
+                      <div className={`flex items-center gap-1 text-[11px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${stat.up ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
+                        {stat.up ? <ArrowUpRight size={14} /> : <ArrowDownLeft size={14} />}
                         {stat.diff}
                       </div>
                     </div>
                     <div>
-                      <div className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1">{stat.label}</div>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-black text-brand-dark">{stat.value}</span>
-                        {stat.sub && <span className="text-sm font-bold text-gray-400">{stat.sub}</span>}
-                      </div>
+                      <h4 className="text-[10px] font-black text-ink-muted uppercase tracking-[0.3em] mb-3">{stat.label}</h4>
+                      <div className="text-4xl font-black text-ink tracking-tighter">{stat.value}</div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Charts & Real-time Orders */}
-              <div className="grid lg:grid-cols-3 gap-8">
-                {/* Real-time Orders List */}
-                <div className="lg:col-span-2 bg-white rounded-[32px] shadow-soft border border-gray-100 overflow-hidden">
-                  <div className="p-6 border-b border-gray-50 flex items-center justify-between">
+              <div className="grid xl:grid-cols-3 gap-12">
+                {/* Orders Feed */}
+                <div className="xl:col-span-2 card-premium border-none shadow-2xl overflow-hidden bg-card-bg">
+                  <div className="p-10 border-b border-border flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-black text-brand-dark">Commandes en temps réel</h3>
-                      <p className="text-gray-400 text-xs font-bold flex items-center gap-1">
-                        <Clock className="w-3 h-3" /> MISE À JOUR LIVE
-                      </p>
+                      <h3 className="text-2xl font-black text-ink tracking-tight">Commandes en direct</h3>
+                      <div className="flex items-center gap-3 mt-2">
+                        <div className="live-indicator"></div>
+                        <p className="text-[10px] text-ink-muted font-black uppercase tracking-[0.2em]">Mise à jour en temps réel</p>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <button className="px-4 py-2 bg-brand-green/10 text-brand-green rounded-lg text-xs font-bold">Tout</button>
-                      <button className="px-4 py-2 bg-gray-50 text-gray-400 rounded-lg text-xs font-bold">En préparation</button>
-                    </div>
+                    <button className="text-[10px] font-black text-gold uppercase tracking-[0.2em] border-b-2 border-gold/30 hover:border-gold transition-all">Voir tout l'historique</button>
                   </div>
-                  <div className="divide-y divide-gray-50">
+                  
+                  <div className="divide-y divide-border">
                     {MOCK_ORDERS.map((order, i) => (
-                      <div key={i} className="p-6 flex flex-col sm:flex-row sm:items-center gap-4 hover:bg-gray-50/50 transition-colors">
-                        <div className="flex items-center gap-4 flex-1">
-                          <div className="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center font-black text-xl text-brand-dark">
-                            #{order.tableNumber}
-                          </div>
-                          <div>
-                            <div className="font-black text-brand-dark flex items-center gap-2">
-                              {order.items.length} articles 
-                              <span className="text-gray-300">•</span>
-                              <span className="text-brand-green">{order.total} FCFA</span>
-                            </div>
-                            <div className="text-xs text-gray-400 font-bold tracking-tight">
-                              Commandé il y a 8 min <span className="text-gray-200">|</span> {order.id}
-                            </div>
-                          </div>
+                      <div key={i} className="p-10 flex items-center gap-10 hover:bg-surface-2/50 transition-all group">
+                        <div className="w-20 h-20 bg-navy dark:bg-surface-2 text-gold rounded-[2rem] flex flex-col items-center justify-center font-black transition-all group-hover:scale-105 border border-border shadow-lg">
+                          <span className="text-[10px] opacity-40 uppercase tracking-tighter">Table</span>
+                          <span className="text-3xl mt-[-4px]">{order.tableNumber}</span>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${order.status === 'preparing' ? 'bg-blue-100 text-blue-600' : 'bg-yellow-100 text-yellow-600'}`}>
-                            {order.status === 'preparing' ? 'Préparation' : 'En attente'}
+                        
+                        <div className="flex-1">
+                          <div className="flex items-center gap-4 mb-2">
+                            <h5 className="text-lg font-black text-ink tracking-tight">{order.items.length} Articles</h5>
+                            <span className="text-ink-muted opacity-20">|</span>
+                            <span className="font-black text-gold text-lg tracking-tight">{order.total.toLocaleString()} FCFA</span>
+                          </div>
+                          <p className="text-xs font-bold text-ink-muted uppercase tracking-widest">ID: #PAY-{order.id.split('-')[1]} • 8 min ago</p>
+                        </div>
+
+                        <div className="flex items-center gap-6">
+                          <span className={`badge uppercase px-6 py-2 ${
+                            order.status === 'preparing' ? 'badge-gold' : 'badge-navy'
+                          }`}>
+                            {order.status === 'preparing' ? 'En Préparation' : 'En Attente'}
                           </span>
-                          <button className="p-2.5 bg-gray-100 rounded-xl text-brand-dark hover:bg-brand-green hover:text-white transition-all">
-                            <CheckCircle2 className="w-5 h-5" />
+                          <button className="w-12 h-12 rounded-2xl bg-surface-2 border border-border flex items-center justify-center text-ink-muted hover:text-gold transition-all">
+                            <CheckCircle2 size={24} />
                           </button>
                         </div>
                       </div>
                     ))}
                   </div>
-                  <div className="p-4 bg-gray-50/50 text-center">
-                    <button className="text-sm font-bold text-brand-green hover:underline">Voir l'historique complet</button>
-                  </div>
                 </div>
 
-                {/* Quick Actions / Activity */}
-                <div className="space-y-6">
-                  <div className="bg-brand-green rounded-[32px] p-8 text-white relative overflow-hidden">
-                    <h3 className="text-xl font-black mb-2 relative z-10">Optimisez votre menu</h3>
-                    <p className="text-white/70 text-sm mb-6 relative z-10 leading-relaxed">
-                      "Atassi" est votre plat le plus commandé aujourd'hui. Pensez à le mettre en avant sur votre interface client !
-                    </p>
-                    <button className="bg-white text-brand-green px-6 py-3 rounded-xl font-black text-sm relative z-10 shadow-xl shadow-black/10">
-                      Booster les ventes
-                    </button>
-                    <UtensilsCrossed className="absolute -bottom-8 -right-8 w-40 h-40 text-white/5 -rotate-12" />
+                {/* Right Column: Insights */}
+                <div className="space-y-12">
+                  <div className="hero-gradient p-12 rounded-[3rem] text-white relative overflow-hidden group shadow-2xl">
+                    <div className="relative z-10">
+                      <div className="bg-gold w-14 h-14 rounded-2xl flex items-center justify-center text-navy mb-8 group-hover:scale-110 transition-transform shadow-xl">
+                        <Sparkles size={28} />
+                      </div>
+                      <h3 className="text-2xl font-black mb-4 tracking-tight leading-tight">Insight PayDish AI</h3>
+                      <p className="text-white/60 text-sm font-medium mb-10 leading-relaxed">
+                        Le plat <span className="text-gold font-bold">"Atassi Royale"</span> performe 40% mieux que d'habitude. Pensez à augmenter le stock pour ce soir.
+                      </p>
+                      <button className="w-full bg-white text-navy py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-gold transition-colors">
+                        Optimiser le stock
+                      </button>
+                    </div>
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 blur-[80px] -mr-32 -mt-32 rounded-full"></div>
                   </div>
 
-                  <div className="bg-white rounded-[32px] shadow-soft border border-gray-100 p-6">
-                    <h3 className="text-sm font-black text-brand-dark uppercase tracking-widest mb-6">Activités récentes</h3>
-                    <div className="space-y-6">
+                  <div className="card-premium bg-card-bg border-none shadow-2xl">
+                    <h3 className="text-[11px] font-black text-ink-muted uppercase tracking-[0.3em] mb-10">Activité Récente</h3>
+                    <div className="space-y-10">
                       {[
-                        { type: 'payment', text: 'Paiement de 12 500 FCFA reçu (Wave)', time: '2 min' },
-                        { type: 'order', text: 'Nouvelle commande - Table 4', time: '15 min' },
-                        { type: 'stock', text: 'Jus de Bissap marqué "Épuisé"', time: '1h' }
+                        { icon: CreditCard, text: 'Paiement Wave - Table 4', amount: '+12.500', time: 'Juste maintenant', color: 'gold' },
+                        { icon: ShoppingBag, text: 'Nouvelle commande - Table 1', amount: '+8.200', time: '12 min', color: 'ink' },
+                        { icon: TableIcon, text: 'Table 7 libre', amount: null, time: '1h', color: 'ink-muted' }
                       ].map((activity, i) => (
-                        <div key={i} className="flex gap-4">
-                          <div className={`w-2 h-2 rounded-full mt-1.5 ${activity.type === 'payment' ? 'bg-brand-green shadow-[0_0_8px_rgba(29,185,84,0.5)]' : 'bg-gray-300'}`}></div>
-                          <div>
-                            <p className="text-sm font-bold text-brand-dark">{activity.text}</p>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{activity.time}</span>
+                        <div key={i} className="flex gap-6 group cursor-default">
+                          <div className={`w-12 h-12 rounded-2xl bg-surface-2 flex items-center justify-center border border-border group-hover:border-gold transition-colors ${activity.color === 'gold' ? 'text-gold' : 'text-ink-muted'}`}>
+                            <activity.icon size={20} />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex justify-between items-start mb-1">
+                              <p className="text-sm font-black text-ink tracking-tight">{activity.text}</p>
+                              {activity.amount && <span className="text-xs font-black text-gold">{activity.amount}</span>}
+                            </div>
+                            <span className="text-[10px] font-black text-ink-muted uppercase tracking-[0.2em]">{activity.time}</span>
                           </div>
                         </div>
                       ))}
@@ -220,46 +232,8 @@ export default function Dashboard() {
               </div>
             </>
           )}
-
-          {activeTab === 'menu' && (
-             <div className="bg-white rounded-[32px] shadow-soft border border-gray-100 p-8">
-               <div className="flex items-center justify-between mb-8">
-                 <h2 className="text-2xl font-black text-brand-dark">Gestion du Menu</h2>
-                 <button className="bg-brand-green text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2">
-                   <Plus className="w-5 h-5" /> Ajouter un plat
-                 </button>
-               </div>
-               <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                 {restaurant.menu.map(item => (
-                   <div key={item.id} className="border border-gray-100 rounded-2xl overflow-hidden group">
-                     <div className="h-40 bg-gray-100 relative">
-                       <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                       <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black">{item.price} FCFA</div>
-                     </div>
-                     <div className="p-4">
-                       <h4 className="font-black text-brand-dark mb-1">{item.name}</h4>
-                       <p className="text-xs text-gray-500 mb-4 line-clamp-2">{item.description}</p>
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-center gap-2">
-                           <div className="w-8 h-4 bg-brand-green rounded-full relative cursor-pointer">
-                              <div className="absolute right-0.5 top-0.5 w-3 h-3 bg-white rounded-full"></div>
-                           </div>
-                           <span className="text-[10px] font-black text-brand-green uppercase tracking-widest">En stock</span>
-                         </div>
-                         <button className="text-gray-300 hover:text-brand-dark transition-colors"><Settings className="w-4 h-4" /></button>
-                       </div>
-                     </div>
-                   </div>
-                 ))}
-               </div>
-             </div>
-          )}
         </div>
       </main>
     </div>
   );
-}
-
-function QrCodeIcon({ className }: { className?: string }) {
-  return <QrCode className={className} />;
 }
