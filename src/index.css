@@ -59,12 +59,12 @@
 .btn-gold {
   background: linear-gradient(135deg, #C9A84C 0%, #E0C06A 100%);
   color: #020617;
-  @apply font-black uppercase tracking-widest text-[11px] px-8 py-4 rounded-xl shadow-lg transition-all active:scale-95;
+  @apply font-black uppercase tracking-widest text-[11px] px-8 py-4 rounded-xl shadow-lg transition-all;
   box-shadow: 0 10px 20px -5px rgba(201, 168, 76, 0.4);
 }
 .btn-gold:hover {
-  @apply -translate-y-0.5;
   box-shadow: 0 15px 25px -5px rgba(201, 168, 76, 0.5);
+  @apply brightness-110;
 }
 
 .btn-ghost {
@@ -155,7 +155,10 @@
 }
 
 .hover-lift {
-  @apply transition-transform duration-300 hover:-translate-y-1;
+  @apply transition-all duration-300;
+}
+.hover-lift:hover {
+  @apply border-gold/50 shadow-xl;
 }
 
 .shadow-soft {

@@ -131,35 +131,116 @@ export default function Dashboard() {
                 exit={{ opacity: 0, y: -20 }}
                 className="space-y-12"
               >
-                {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mt-12">
-                  {[
-                    { label: "Ventes jour", value: "47", diff: "+12%", up: true, icon: ShoppingBag },
-                    { label: "Chiffre d'affaires", value: "385k", diff: "+8%", up: true, icon: TrendingUp },
-                    { label: "Clientèle", value: "112", diff: "-3%", up: false, icon: Users },
-                    { label: "Taux d'occupation", value: "82%", diff: "+5%", up: true, icon: TableIcon }
-                  ].map((stat, i) => (
-                    <div key={i} className="card-premium hover-lift border-none shadow-xl bg-card-bg">
-                      <div className="flex items-start justify-between mb-8">
-                        <div className="w-14 h-14 rounded-2xl bg-surface-2 flex items-center justify-center text-gold border border-border">
-                          <stat.icon size={28} />
-                        </div>
-                        <div className={`flex items-center gap-1 text-[11px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${stat.up ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
-                          {stat.up ? <ArrowUpRight size={14} /> : <ArrowDownLeft size={14} />}
-                          {stat.diff}
-                        </div>
+                {/* Graph & Stats Section */}
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-12 mt-12">
+                   {/* Revenue Graph Card */}
+                   <div className="xl:col-span-2 card-premium bg-card-bg border-none shadow-2xl p-12 overflow-hidden relative group">
+                      <div className="flex items-center justify-between mb-12 relative z-10">
+                         <div>
+                            <h3 className="text-2xl font-black text-ink tracking-tight">Flux de revenus</h3>
+                            <p className="text-[10px] text-ink-muted font-black uppercase tracking-[0.2em] mt-1">Analyse des 7 derniers jours</p>
+                         </div>
+                         <div className="flex items-center gap-6">
+                            <div className="flex items-center gap-2">
+                               <div className="w-2 h-2 rounded-full bg-gold"></div>
+                               <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">Semaine actuelle</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                               <div className="w-2 h-2 rounded-full bg-surface-2"></div>
+                               <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">Précédente</span>
+                            </div>
+                         </div>
                       </div>
-                      <div>
-                        <h4 className="text-[10px] font-black text-ink-muted uppercase tracking-[0.3em] mb-3">{stat.label}</h4>
-                        <div className="text-4xl font-black text-ink tracking-tighter">{stat.value}</div>
+
+                      <div className="relative h-64 w-full">
+                         {/* SVG Graph Component */}
+                         <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 1000 200">
+                            {/* Grid Lines */}
+                            {[0, 50, 100, 150, 200].map((y) => (
+                              <line key={y} x1="0" y1={y} x2="1000" y2={y} stroke="currentColor" strokeOpacity="0.05" />
+                            ))}
+                            
+                            {/* Gradient Fill */}
+                            <defs>
+                               <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.2" />
+                                  <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+                               </linearGradient>
+                            </defs>
+
+                            {/* Line Path */}
+                            <motion.path
+                               initial={{ pathLength: 0 }}
+                               animate={{ pathLength: 1 }}
+                               transition={{ duration: 2, ease: "easeInOut" }}
+                               d="M0,150 C100,140 150,180 250,130 C350,80 450,150 550,110 C650,70 750,120 850,40 L1000,60"
+                               fill="none"
+                               stroke="#C9A84C"
+                               strokeWidth="4"
+                               strokeLinecap="round"
+                            />
+                            <path
+                               d="M0,150 C100,140 150,180 250,130 C350,80 450,150 550,110 C650,70 750,120 850,40 L1000,60 L1000,200 L0,200 Z"
+                               fill="url(#chartGradient)"
+                            />
+
+                            {/* Data Points */}
+                            {[
+                               {x: 0, y: 150}, {x: 250, y: 130}, {x: 550, y: 110}, {x: 850, y: 40}
+                            ].map((p, i) => (
+                              <circle key={i} cx={p.x} cy={p.y} r="6" fill="#1B3A6B" stroke="#C9A84C" strokeWidth="3" />
+                            ))}
+                         </svg>
                       </div>
-                    </div>
-                  ))}
+
+                      <div className="flex justify-between mt-8 text-[10px] font-black text-ink-muted uppercase tracking-[0.3em]">
+                         <span>Lun</span>
+                         <span>Mar</span>
+                         <span>Mer</span>
+                         <span>Jeu</span>
+                         <span>Ven</span>
+                         <span>Sam</span>
+                         <span>Dim</span>
+                      </div>
+                   </div>
+
+                   {/* Quick Stats Summary Card */}
+                   <div className="space-y-8">
+                      <div className="card-premium bg-card-bg border-none shadow-xl">
+                         <div className="flex items-center gap-4 mb-6">
+                            <div className="w-12 h-12 bg-gold/10 text-gold rounded-2xl flex items-center justify-center">
+                               <TrendingUp size={24}/>
+                            </div>
+                            <h4 className="text-[10px] font-black text-ink-muted uppercase tracking-[0.3em]">Performance</h4>
+                         </div>
+                         <div className="text-4xl font-black text-ink tracking-tighter">385k <span className="text-sm font-bold text-ink-muted tracking-normal">FCFA</span></div>
+                         <p className="text-xs font-bold text-success mt-2 flex items-center gap-1">
+                            <ArrowUpRight size={14}/> +12.5% vs semaine dernière
+                         </p>
+                      </div>
+                      
+                      <div className="card-premium bg-card-bg border-none shadow-xl">
+                         <div className="flex items-center gap-4 mb-6">
+                            <div className="w-12 h-12 bg-navy/10 text-navy rounded-2xl flex items-center justify-center">
+                               <ShoppingBag size={24}/>
+                            </div>
+                            <h4 className="text-[10px] font-black text-ink-muted uppercase tracking-[0.3em]">Commandes</h4>
+                         </div>
+                         <div className="text-4xl font-black text-ink tracking-tighter">47</div>
+                         <div className="mt-6 flex items-center gap-2">
+                            {[1,2,3,4,5].map(i => (
+                              <div key={i} className="flex-1 h-1.5 bg-surface-2 rounded-full overflow-hidden">
+                                 <div className="h-full bg-gold" style={{ width: `${Math.random() * 100}%` }}></div>
+                              </div>
+                            ))}
+                         </div>
+                      </div>
+                   </div>
                 </div>
 
                 <div className="grid xl:grid-cols-3 gap-12">
-                  {/* Orders Feed */}
-                  <div className="xl:col-span-2 card-premium border-none shadow-2xl overflow-hidden bg-card-bg">
+                   {/* Orders Feed */}
+                   <div className="xl:col-span-2 card-premium border-none shadow-2xl overflow-hidden bg-card-bg">
                     <div className="p-10 border-b border-border flex items-center justify-between">
                       <div>
                         <h3 className="text-2xl font-black text-ink tracking-tight">Commandes en direct</h3>
