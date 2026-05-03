@@ -32,7 +32,8 @@ import {
   Globe,
   Share2,
   ChevronDown,
-  MapPin
+  MapPin,
+  User
 } from 'lucide-react';
 import { RESTAURANTS, MOCK_ORDERS } from '../data';
 import { Link } from 'react-router-dom';
@@ -118,6 +119,10 @@ export default function Dashboard() {
               <Plus size={20} />
               NOUVELLE COMMANDE
             </button>
+            <div className="w-[1px] h-8 bg-border mx-2"></div>
+            <div className="w-14 h-14 bg-card-bg rounded-2xl border border-border flex items-center justify-center text-ink-muted hover:text-gold transition-all cursor-pointer shadow-sm group">
+              <User size={24} className="group-hover:scale-110 transition-transform" />
+            </div>
           </div>
         </header>
 
