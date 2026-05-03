@@ -133,28 +133,35 @@ export default function Dashboard() {
               >
                 {/* Graph & Stats Section */}
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-12 mt-12">
-                   {/* Revenue Graph Card */}
+                   {/* Enterprise Multi-Metric Graph Card */}
                    <div className="xl:col-span-2 card-premium bg-card-bg border-none shadow-2xl p-12 overflow-hidden relative group">
-                      <div className="flex items-center justify-between mb-12 relative z-10">
-                         <div>
-                            <h3 className="text-2xl font-black text-ink tracking-tight">Analyse de Performance</h3>
-                            <p className="text-[10px] text-ink-muted font-black uppercase tracking-[0.2em] mt-1">Revenus hebdomadaires (FCFA)</p>
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16 relative z-10">
+                         <div className="flex items-center gap-12">
+                            <div className="cursor-pointer group/stat">
+                               <div className="text-[10px] text-ink-muted font-black uppercase tracking-[0.2em] mb-2 group-hover/stat:text-gold transition-colors">Revenus Totaux</div>
+                               <div className="text-3xl font-black text-ink tracking-tighter">385,000 <span className="text-xs text-ink-muted font-bold">FCFA</span></div>
+                            </div>
+                            <div className="w-[1px] h-10 bg-border"></div>
+                            <div className="cursor-pointer group/stat">
+                               <div className="text-[10px] text-ink-muted font-black uppercase tracking-[0.2em] mb-2 group-hover/stat:text-blue-400 transition-colors">Nouv. Clients</div>
+                               <div className="text-3xl font-black text-ink tracking-tighter">112</div>
+                            </div>
+                            <div className="w-[1px] h-10 bg-border"></div>
+                            <div className="cursor-pointer group/stat">
+                               <div className="text-[10px] text-ink-muted font-black uppercase tracking-[0.2em] mb-2 group-hover/stat:text-ink transition-colors">Commandes</div>
+                               <div className="text-3xl font-black text-ink tracking-tighter">47</div>
+                            </div>
                          </div>
-                         <div className="flex items-center gap-8">
-                            <div className="flex items-center gap-3">
-                               <div className="w-3 h-1 bg-gold rounded-full"></div>
-                               <span className="text-[10px] font-black text-ink uppercase tracking-widest">Cette semaine</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                               <div className="w-3 h-1 bg-ink/10 dark:bg-white/10 rounded-full"></div>
-                               <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">Semaine dernière</span>
-                            </div>
+                         
+                         <div className="flex bg-surface-2 p-1 rounded-xl">
+                            <button className="px-6 py-2 bg-card-bg rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">7 Jours</button>
+                            <button className="px-6 py-2 text-[10px] font-black uppercase tracking-widest text-ink-muted hover:text-ink">30 Jours</button>
                          </div>
                       </div>
 
-                      <div className="relative h-72 w-full flex gap-6">
-                         {/* Y-Axis Labels */}
-                         <div className="flex flex-col justify-between text-[9px] font-black text-ink-muted uppercase tracking-widest pb-8 pt-2">
+                      <div className="relative h-80 w-full flex gap-8">
+                         {/* Primary Y-Axis (Currency) */}
+                         <div className="flex flex-col justify-between text-[9px] font-black text-ink-muted uppercase tracking-widest pb-10 pt-2 w-10 text-right">
                             <span>400k</span>
                             <span>300k</span>
                             <span>200k</span>
@@ -167,104 +174,110 @@ export default function Dashboard() {
                             <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 1000 200">
                                {/* Horizontal Grid Lines */}
                                {[0, 50, 100, 150, 200].map((y) => (
-                                 <line key={y} x1="0" y1={y} x2="1000" y2={y} stroke="currentColor" strokeOpacity="0.03" strokeWidth="1" />
+                                 <line key={y} x1="0" y1={y} x2="1000" y2={y} stroke="currentColor" strokeOpacity="0.04" strokeWidth="1" />
                                ))}
                                
-                               {/* Gradient Fill */}
                                <defs>
-                                  <linearGradient id="realChartGradient" x1="0" y1="0" x2="0" y2="1">
-                                     <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.15" />
+                                  <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                                     <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.1" />
                                      <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
                                   </linearGradient>
                                </defs>
 
-                               {/* Previous Week Line (Faded & Dotted) */}
+                               {/* Commandes (Bars) - Visualized as subtle background bars */}
+                               {[50, 150, 250, 350, 450, 550, 650, 750, 850, 950].map((x, i) => (
+                                 <rect key={i} x={x-15} y={100 + (Math.random() * 80)} width="30" height="100" fill="currentColor" fillOpacity="0.03" rx="4" />
+                               ))}
+
+                               {/* Nouveaux Clients (Secondary Line) */}
                                <path
-                                  d="M0,160 C100,170 150,150 250,160 C350,170 450,140 550,150 C650,160 750,130 850,140 L1000,150"
+                                  d="M0,180 C100,160 200,170 300,140 C400,150 500,120 600,130 C700,110 800,120 900,90 L1000,100"
                                   fill="none"
-                                  stroke="currentColor"
-                                  strokeOpacity="0.1"
+                                  stroke="#3B82F6"
+                                  strokeOpacity="0.3"
                                   strokeWidth="2"
-                                  strokeDasharray="4 4"
                                />
 
-                               {/* Current Week Gradient Area */}
+                               {/* Revenus (Primary Line Area) */}
                                <path
-                                  d="M0,140 C80,135 150,160 220,110 C300,50 380,120 460,90 C540,60 620,110 700,50 C780,-10 880,40 1000,20 L1000,200 L0,200 Z"
-                                  fill="url(#realChartGradient)"
-                               />
+                                  d="M0,150 C80,145 150,170 220,120 C300,60 380,130 460,100 C540,70 620,120 700,60 C780,0 880,50 1000,30 L1000,200 L0,200 Z"
+                                  fill="url(#revenueGradient)"
+                                />
 
-                               {/* Current Week Line (Primary) */}
+                               {/* Revenus (Primary Line) */}
                                <motion.path
                                   initial={{ pathLength: 0 }}
                                   animate={{ pathLength: 1 }}
                                   transition={{ duration: 1.5, ease: "easeOut" }}
-                                  d="M0,140 C80,135 150,160 220,110 C300,50 380,120 460,90 C540,60 620,110 700,50 C780,-10 880,40 1000,20"
+                                  d="M0,150 C80,145 150,170 220,120 C300,60 380,130 460,100 C540,70 620,120 700,60 C780,0 880,50 1000,30"
                                   fill="none"
                                   stroke="#C9A84C"
                                   strokeWidth="3"
                                   strokeLinecap="round"
                                />
 
-                               {/* Interactive Markers (Data Points) */}
-                               {[
-                                  {x: 220, y: 110, val: '145k'}, 
-                                  {x: 460, y: 90, val: '185k'}, 
-                                  {x: 700, y: 50, val: '310k'}, 
-                                  {x: 1000, y: 20, val: '385k'}
-                               ].map((p, i) => (
-                                 <g key={i} className="group/marker cursor-pointer">
-                                    <circle cx={p.x} cy={p.y} r="4" fill="#C9A84C" />
-                                    <circle cx={p.x} cy={p.y} r="12" fill="#C9A84C" fillOpacity="0" className="hover:fill-opacity-10 transition-all" />
-                                 </g>
-                               ))}
+                               {/* Top Data Point Marker */}
+                               <g className="filter drop-shadow-lg">
+                                  <circle cx="1000" cy="30" r="6" fill="#1B3A6B" stroke="#C9A84C" strokeWidth="3" />
+                               </g>
                             </svg>
 
-                            <div className="flex justify-between mt-8 text-[9px] font-black text-ink-muted uppercase tracking-[0.4em]">
-                               <span>Lun</span>
-                               <span>Mar</span>
-                               <span>Mer</span>
-                               <span>Jeu</span>
-                               <span>Ven</span>
-                               <span>Sam</span>
-                               <span>Dim</span>
+                            <div className="flex justify-between mt-10 text-[9px] font-black text-ink-muted uppercase tracking-[0.4em]">
+                               <span>26 Avr</span>
+                               <span>27 Avr</span>
+                               <span>28 Avr</span>
+                               <span>29 Avr</span>
+                               <span>30 Avr</span>
+                               <span>01 Mai</span>
+                               <span>02 Mai</span>
                             </div>
+                         </div>
+
+                         {/* Secondary Y-Axis (Counts for Users/Orders) */}
+                         <div className="flex flex-col justify-between text-[9px] font-black text-ink-muted uppercase tracking-widest pb-10 pt-2 w-8">
+                            <span className="text-blue-400">150</span>
+                            <span className="text-blue-400">100</span>
+                            <span className="text-blue-400">50</span>
+                            <span className="text-blue-400">25</span>
+                            <span className="text-blue-400 text-opacity-40">Clients</span>
                          </div>
                       </div>
                    </div>
 
-                   {/* Quick Stats Summary Card */}
+                   {/* Insight Summary Side-Card */}
                    <div className="space-y-8">
-                      <div className="card-premium bg-card-bg border-none shadow-xl">
-                         <div className="flex items-center gap-4 mb-6">
-                            <div className="w-12 h-12 bg-gold/10 text-gold rounded-2xl flex items-center justify-center">
-                               <TrendingUp size={24}/>
+                      <div className="hero-gradient p-10 rounded-[3rem] text-white relative overflow-hidden shadow-2xl flex flex-col justify-between min-h-[220px]">
+                         <div className="relative z-10">
+                            <div className="bg-white/20 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
+                               <Sparkles size={24}/>
                             </div>
-                            <h4 className="text-[10px] font-black text-ink-muted uppercase tracking-[0.3em]">Performance</h4>
+                            <h4 className="text-lg font-black tracking-tight mb-2">Objectif Mensuel</h4>
+                            <p className="text-white/60 text-[10px] font-black uppercase tracking-widest">85% Complété</p>
                          </div>
-                         <div className="text-4xl font-black text-ink tracking-tighter">385k <span className="text-sm font-bold text-ink-muted tracking-normal">FCFA</span></div>
-                         <p className="text-xs font-bold text-success mt-2 flex items-center gap-1">
-                            <ArrowUpRight size={14}/> +12.5% vs semaine dernière
-                         </p>
+                         <div className="relative z-10 w-full bg-white/10 h-2 rounded-full overflow-hidden mt-8">
+                            <div className="h-full bg-gold w-[85%]"></div>
+                         </div>
+                         <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 blur-[80px] -mr-32 -mt-32 rounded-full"></div>
                       </div>
                       
-                      <div className="card-premium bg-card-bg border-none shadow-xl">
-                         <div className="flex items-center gap-4 mb-6">
-                            <div className="w-12 h-12 bg-navy/10 text-navy rounded-2xl flex items-center justify-center">
-                               <ShoppingBag size={24}/>
+                      <div className="card-premium bg-card-bg border-none shadow-xl p-10">
+                         <div className="flex items-center justify-between mb-8">
+                            <div className="w-12 h-12 bg-success/10 text-success rounded-2xl flex items-center justify-center"><TrendingUp size={24}/></div>
+                            <div className="text-right">
+                               <div className="text-[10px] font-black text-ink-muted uppercase tracking-widest">Panier Moyen</div>
+                               <div className="text-2xl font-black text-ink">8,200 <span className="text-[10px] opacity-50">FCFA</span></div>
                             </div>
-                            <h4 className="text-[10px] font-black text-ink-muted uppercase tracking-[0.3em]">Commandes</h4>
                          </div>
-                         <div className="text-4xl font-black text-ink tracking-tighter">47</div>
-                         <div className="mt-6 flex items-center gap-2">
-                            {[1,2,3,4,5].map(i => (
-                              <div key={i} className="flex-1 h-1.5 bg-surface-2 rounded-full overflow-hidden">
-                                 <div className="h-full bg-gold" style={{ width: `${Math.random() * 100}%` }}></div>
+                         <div className="h-24 flex items-end gap-1.5 pt-4">
+                            {[40, 70, 45, 90, 65, 80, 55].map((h, i) => (
+                              <div key={i} className="flex-1 bg-surface-2 rounded-t-lg relative group/bar">
+                                 <div className="absolute bottom-0 inset-x-0 bg-gold/20 rounded-t-lg transition-all group-hover/bar:bg-gold/40" style={{ height: `${h}%` }}></div>
                               </div>
                             ))}
                          </div>
                       </div>
                    </div>
+                </div>
                 </div>
 
                 <div className="grid xl:grid-cols-3 gap-12">
