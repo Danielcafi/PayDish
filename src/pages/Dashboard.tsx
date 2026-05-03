@@ -278,7 +278,6 @@ export default function Dashboard() {
                       </div>
                    </div>
                 </div>
-                </div>
 
                 <div className="grid xl:grid-cols-3 gap-12">
                    {/* Orders Feed */}
