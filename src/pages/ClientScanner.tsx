@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { QrCode, X, Camera, SwitchCamera, Loader2, AlertCircle, ArrowRight } from 'lucide-react';
+import { QrCode, X, Camera, Loader2, AlertCircle, ArrowRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function ClientScanner() {
@@ -23,14 +23,12 @@ export default function ClientScanner() {
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
-      
-      // Simulate detection after 3 seconds
       setTimeout(() => {
         stopStream(stream);
         navigate('/menu/rest-1/7');
       }, 3000);
     } catch (err) {
-      setError("Désolé, l'accès à la caméra est nécessaire pour scanner le QR code.");
+      setError("L'accès à la caméra est requis pour scanner le code QR.");
       setScanning(false);
     }
   };
@@ -47,54 +45,54 @@ export default function ClientScanner() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-dark flex flex-col text-white">
-      <div className="p-4 flex items-center justify-between">
-        <button onClick={() => navigate(-1)} className="p-2 bg-white/10 rounded-full">
-          <X className="w-6 h-6" />
-        </button>
-        <div className="flex items-center gap-2">
-          <QrCode className="text-brand-green w-6 h-6" />
-          <span className="font-bold tracking-tight">PayDish Scan</span>
+    <div className="min-h-screen bg-navy flex flex-col text-white selection:bg-gold/30">
+      {/* Header */}
+      <header className="p-8 flex items-center justify-between z-10">
+        <button onClick={() => navigate(-1)} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all"><ChevronLeft size={20} /></button>
+        <div className="flex items-center gap-3">
+          <img src="/logo.png" alt="PayDish" className="h-8 w-auto" />
+          <span className="text-xl font-black tracking-tighter uppercase">PayDish Scan</span>
         </div>
         <div className="w-10"></div>
-      </div>
+      </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center p-6 relative overflow-hidden">
+      <main className="flex-1 flex flex-col items-center justify-center p-8 relative overflow-hidden">
         {!scanning && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center w-full max-w-sm"
           >
-            <div className="w-64 h-64 bg-white/5 border-2 border-dashed border-white/20 rounded-[40px] flex items-center justify-center mb-12 relative">
-              <QrCode className="w-32 h-32 text-white/30" />
-              <button 
+            <div className="relative mx-auto w-72 h-72 mb-16">
+               <div className="absolute inset-0 bg-white/5 rounded-[4rem] border-2 border-dashed border-white/20 animate-pulse"></div>
+               <div className="absolute inset-0 flex items-center justify-center">
+                  <QrCode size={120} className="text-white/10" />
+               </div>
+               <button 
                 onClick={startScan}
                 className="absolute inset-0 flex items-center justify-center group"
-              >
-                <div className="bg-brand-green w-16 h-16 rounded-full flex items-center justify-center shadow-xl shadow-brand-green/40 group-hover:scale-110 transition-transform">
-                  <Camera className="w-8 h-8" />
-                </div>
-              </button>
+               >
+                 <div className="bg-gold w-24 h-24 rounded-[2.5rem] flex items-center justify-center shadow-2xl shadow-gold/40 group-hover:scale-110 transition-transform active:scale-95">
+                   <Camera size={40} className="text-navy" />
+                 </div>
+               </button>
             </div>
             
-            <h1 className="text-2xl font-black mb-4">Prêt à commander ?</h1>
-            <p className="text-white/60 mb-12 max-w-xs mx-auto">
-              Pointez votre caméra vers le QR code PayDish sur votre table.
-            </p>
+            <h1 className="text-3xl font-black mb-4 tracking-tight">Prêt à commander ?</h1>
+            <p className="text-white/40 mb-12 font-medium">Scannez simplement le code QR présent sur votre table pour accéder au menu digital.</p>
 
-            <form onSubmit={handleManualSubmit} className="w-full max-w-xs mx-auto space-y-4">
-              <div className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2">Ou entrez le code manuellement</div>
-              <div className="flex gap-2">
+            <form onSubmit={handleManualSubmit} className="space-y-4">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Ou entrez le code manuellement</span>
+              <div className="flex gap-3">
                 <input 
                   type="text" 
                   value={manualCode}
-                  onChange={(e) => setManualCode(e.target.value)}
-                  placeholder="Ex: T7" 
-                  className="flex-1 bg-white/10 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-green uppercase font-bold" 
+                  onChange={(e) => setManualCode(e.target.value.toUpperCase())}
+                  placeholder="EX: T7"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 font-black text-center outline-none focus:border-gold transition-colors" 
                 />
-                <button type="submit" className="bg-brand-green p-3 rounded-xl">
-                  <ArrowRight className="w-6 h-6" />
+                <button type="submit" className="bg-white text-navy p-4 rounded-2xl hover:bg-gold transition-colors active:scale-95">
+                  <ArrowRight size={24} />
                 </button>
               </div>
             </form>
@@ -103,69 +101,56 @@ export default function ClientScanner() {
 
         {scanning && (
           <div className="fixed inset-0 z-50 bg-black flex flex-col">
-            <video 
-              ref={videoRef} 
-              autoPlay 
-              playsInline 
-              className="flex-1 object-cover"
-            />
+            <video ref={videoRef} autoPlay playsInline className="flex-1 object-cover opacity-60" />
+            
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="relative w-72 h-72 border-4 border-brand-green/50 rounded-[48px]">
-                <div className="absolute inset-x-0 h-1 bg-brand-green shadow-[0_0_15px_#1DB954] animate-scan-line"></div>
-                {/* Corners */}
-                <div className="absolute -top-1 -left-1 w-12 h-12 border-t-8 border-l-8 border-brand-green rounded-tl-xl"></div>
-                <div className="absolute -top-1 -right-1 w-12 h-12 border-t-8 border-r-8 border-brand-green rounded-tr-xl"></div>
-                <div className="absolute -bottom-1 -left-1 w-12 h-12 border-b-8 border-l-8 border-brand-green rounded-bl-xl"></div>
-                <div className="absolute -bottom-1 -right-1 w-12 h-12 border-b-8 border-r-8 border-brand-green rounded-br-xl"></div>
+              <div className="relative w-72 h-72 border-2 border-white/20 rounded-[3rem]">
+                <div className="absolute inset-x-0 h-1 bg-gold shadow-[0_0_20px_rgba(212,175,55,0.8)] animate-scan-line"></div>
+                {/* Visual corners */}
+                <div className="absolute -top-1 -left-1 w-12 h-12 border-t-4 border-l-4 border-gold rounded-tl-3xl"></div>
+                <div className="absolute -top-1 -right-1 w-12 h-12 border-t-4 border-r-4 border-gold rounded-tr-3xl"></div>
+                <div className="absolute -bottom-1 -left-1 w-12 h-12 border-b-4 border-l-4 border-gold rounded-bl-3xl"></div>
+                <div className="absolute -bottom-1 -right-1 w-12 h-12 border-b-4 border-r-4 border-gold rounded-br-3xl"></div>
               </div>
             </div>
             
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-44 text-center w-full px-8 pointer-events-none">
-              <div className="bg-brand-dark/80 backdrop-blur-md p-4 rounded-2xl inline-flex items-center gap-3">
-                <Loader2 className="w-5 h-5 text-brand-green animate-spin" />
-                <span className="font-bold text-sm tracking-tight text-white">Lecture du menu en cours...</span>
-              </div>
+            <div className="absolute bottom-24 inset-x-0 text-center flex flex-col items-center gap-6">
+               <div className="bg-navy/80 backdrop-blur-xl px-8 py-4 rounded-full border border-white/10 inline-flex items-center gap-4">
+                  <Loader2 size={20} className="animate-spin text-gold" />
+                  <span className="font-bold text-sm">Lecture du menu PayDish...</span>
+               </div>
+               <button 
+                onClick={() => {
+                  setScanning(false);
+                  if (videoRef.current?.srcObject) stopStream(videoRef.current.srcObject as MediaStream);
+                }} 
+                className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all border border-white/10"
+               >
+                 <X size={24} />
+               </button>
             </div>
-
-            <button 
-              onClick={() => {
-                setScanning(false);
-                if (videoRef.current?.srcObject) {
-                  stopStream(videoRef.current.srcObject as MediaStream);
-                }
-              }} 
-              className="absolute top-6 right-6 p-3 bg-brand-dark/50 rounded-full"
-            >
-              <X className="w-6 h-6" />
-            </button>
           </div>
         )}
 
         {error && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed bottom-10 left-6 right-6 bg-red-500 p-4 rounded-2xl flex items-start gap-3 shadow-2xl">
-            <AlertCircle className="w-5 h-5 mt-0.5 shrink-0" />
-            <div>
-              <div className="font-bold">Erreur de caméra</div>
-              <div className="text-sm text-red-100">{error}</div>
-            </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="fixed bottom-10 left-8 right-8 bg-danger p-5 rounded-3xl flex items-center gap-4 shadow-2xl">
+            <AlertCircle size={24} className="shrink-0" />
+            <p className="font-bold text-sm">{error}</p>
           </motion.div>
         )}
       </main>
 
-      <div className="p-8 text-center text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">
-        PayDish Bénin 2025
-      </div>
+      <footer className="p-10 text-center opacity-20">
+         <p className="text-[10px] font-black uppercase tracking-[0.4em]">PayDish Technologies 2026</p>
+      </footer>
 
       <style>{`
         @keyframes scan-line {
           0% { top: 0; }
-          50% { top: 100%; }
-          100% { top: 0; }
+          100% { top: 100%; }
         }
         .animate-scan-line {
-          animation: scan-line 2.5s ease-in-out infinite;
-          position: absolute;
-          width: 100%;
+          animation: scan-line 2s ease-in-out infinite alternate;
         }
       `}</style>
     </div>

@@ -14,9 +14,7 @@ export default function AdminPanel() {
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <header className="bg-brand-dark text-white p-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="bg-brand-green p-1.5 rounded-lg">
-            <Shield className="w-6 h-6" />
-          </div>
+          <img src="/logo.png" alt="PayDish Logo" className="h-10 w-auto" />
           <h1 className="text-xl font-black">PayDish Super Admin</h1>
         </div>
         <div className="flex items-center gap-4">

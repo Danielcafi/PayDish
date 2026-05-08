@@ -11,13 +11,11 @@ import {
   Search, 
   Plus, 
   Minus, 
-  Info, 
   ChevronRight, 
-  ChevronLeft,
+  Star, 
+  Trash2,
   X,
-  Star,
-  CheckCircle2,
-  Trash2
+  ArrowLeft
 } from 'lucide-react';
 import { RESTAURANTS } from '../data';
 import { Plate, OrderItem } from '../types';
@@ -50,34 +48,33 @@ export default function ClientMenu() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24 lg:pb-0">
-      {/* Client Header */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-brand-green rounded-xl flex items-center justify-center p-1.5 overflow-hidden shadow-sm shadow-brand-green/10">
-            <img src={restaurant.logo} alt={restaurant.name} className="w-full h-full object-cover rounded-md" />
+    <div className="min-h-screen bg-surface-2 pb-24 transition-colors duration-500">
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-border px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 bg-navy rounded-xl overflow-hidden shadow-sm">
+            <img src={restaurant.logo} alt={restaurant.name} className="w-full h-full object-cover" />
           </div>
           <div>
-            <h1 className="font-black text-brand-dark leading-none">{restaurant.name}</h1>
+            <h1 className="text-sm font-black text-navy uppercase tracking-tight">{restaurant.name}</h1>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <div className="w-1.5 h-1.5 bg-brand-green rounded-full animate-pulse"></div>
-              <span className="text-[10px] font-black text-brand-green uppercase tracking-wider">Table {tableId || '7'}</span>
+               <span className="text-[10px] font-black text-gold uppercase tracking-widest">Table {tableId || '7'}</span>
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-           <button className="p-2.5 bg-gray-100 rounded-full text-brand-dark"><Search className="w-5 h-5" /></button>
-        </div>
+        <button className="w-10 h-10 bg-surface-2 rounded-full flex items-center justify-center text-navy shadow-sm">
+           <Search size={18} />
+        </button>
       </header>
 
-      {/* Categories Toolbar */}
-      <div className="sticky top-[65px] z-30 bg-white border-b border-gray-100 overflow-x-auto pwa-hide-scrollbar">
-        <div className="flex px-4 py-3 gap-2 min-w-max">
+      {/* Categories */}
+      <div className="sticky top-[73px] z-30 bg-white/50 backdrop-blur-md border-b border-border overflow-x-auto pwa-hide-scrollbar">
+        <div className="flex px-6 py-4 gap-3 min-w-max">
           {restaurant.categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.name)}
-              className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${activeCategory === cat.name ? 'bg-brand-green text-white shadow-lg shadow-brand-green/20' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+              className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeCategory === cat.name ? 'bg-navy text-white shadow-lg' : 'bg-surface-2 text-ink-muted hover:text-navy'}`}
             >
               {cat.name}
             </button>
@@ -85,44 +82,50 @@ export default function ClientMenu() {
         </div>
       </div>
 
-      {/* Plates Grid */}
-      <main className="p-4 max-w-screen-md mx-auto space-y-6">
-        <h2 className="text-xl font-black text-brand-dark">Menu — {activeCategory}</h2>
+      {/* Menu Grid */}
+      <main className="p-6 max-w-screen-md mx-auto space-y-8">
+        <div className="flex items-center justify-between">
+           <h2 className="text-xl font-black text-navy">{activeCategory}</h2>
+           <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">{filteredMenu.length} Plats</span>
+        </div>
+        
         <div className="space-y-4">
           {filteredMenu.map((plate) => (
             <motion.div
               layout
               key={plate.id}
-              className="bg-white p-3 rounded-[24px] shadow-soft border border-gray-100 flex gap-4 overflow-hidden relative group"
+              className="bg-white p-4 rounded-[2rem] border border-border flex gap-4 transition-all hover:shadow-xl hover:shadow-navy/5 group"
             >
-              <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-100 rounded-2xl overflow-hidden shrink-0 relative">
-                <img src={plate.image} alt={plate.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="w-24 h-24 sm:w-32 sm:h-32 bg-surface-2 rounded-2xl overflow-hidden shrink-0 relative">
+                <img src={plate.image} alt={plate.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 {plate.popular && (
-                  <div className="absolute top-2 left-2 bg-brand-orange text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest flex items-center gap-1">
-                    <Star className="w-2 h-2 fill-current" /> Populaire
+                  <div className="absolute top-2 left-2 bg-gold text-white text-[8px] font-black px-2 py-1 rounded-full uppercase tracking-widest flex items-center gap-1 shadow-lg">
+                    <Star size={10} fill="currentColor" /> Top
                   </div>
                 )}
               </div>
+              
               <div className="flex-1 flex flex-col justify-between py-1">
                 <div>
-                  <h3 className="text-base font-black text-brand-dark mb-1">{plate.name}</h3>
-                  <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{plate.description}</p>
+                  <h3 className="text-base font-black text-navy mb-1">{plate.name}</h3>
+                  <p className="text-xs text-ink-muted line-clamp-2 leading-relaxed">{plate.description}</p>
                 </div>
-                <div className="flex items-center justify-between mt-2">
-                  <span className="font-black text-brand-green text-sm">{plate.price.toLocaleString()} FCFA</span>
+                
+                <div className="flex items-center justify-between mt-4">
+                  <span className="font-black text-navy text-sm">{plate.price.toLocaleString()} <span className="text-[10px] opacity-50">FCFA</span></span>
                   
                   {cart.find(i => i.id === plate.id) ? (
-                    <div className="flex items-center gap-3 bg-gray-100 rounded-full p-1">
-                       <button onClick={() => removeFromCart(plate.id)} className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-brand-dark shadow-sm"><Minus className="w-4 h-4" /></button>
-                       <span className="font-black text-sm w-4 text-center">{cart.find(i => i.id === plate.id)?.quantity}</span>
-                       <button onClick={() => addToCart(plate)} className="w-8 h-8 bg-brand-green rounded-full flex items-center justify-center text-white shadow-sm"><Plus className="w-4 h-4" /></button>
+                    <div className="flex items-center gap-4 bg-surface-2 rounded-full p-1 border border-border">
+                       <button onClick={() => removeFromCart(plate.id)} className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-navy shadow-sm"><Minus size={14} /></button>
+                       <span className="font-black text-xs w-4 text-center">{cart.find(i => i.id === plate.id)?.quantity}</span>
+                       <button onClick={() => addToCart(plate)} className="w-8 h-8 bg-navy rounded-full flex items-center justify-center text-white shadow-sm"><Plus size={14} /></button>
                     </div>
                   ) : (
                     <button 
                       onClick={() => addToCart(plate)}
-                      className="bg-brand-dark text-white p-2.5 rounded-full shadow-lg shadow-black/10 active:scale-90 transition-transform"
+                      className="bg-navy text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-all hover:bg-gold"
                     >
-                      <Plus className="w-5 h-5" />
+                      <Plus size={20} />
                     </button>
                   )}
                 </div>
@@ -132,33 +135,32 @@ export default function ClientMenu() {
         </div>
       </main>
 
-      {/* Floating Cart Bar (Mobile) */}
+      {/* Floating Cart (Mobile) */}
       <AnimatePresence>
         {cartCount > 0 && !isCartOpen && (
           <motion.div
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            exit={{ y: 100 }}
-            className="fixed bottom-6 left-4 right-4 z-50 lg:max-w-md lg:left-1/2 lg:-translate-x-1/2"
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-8 left-6 right-6 z-50 lg:max-w-md lg:left-1/2 lg:-translate-x-1/2"
           >
             <button 
               onClick={() => setIsCartOpen(true)}
-              className="w-full bg-brand-green text-white p-4 rounded-[24px] shadow-2xl flex items-center justify-between group overflow-hidden relative"
+              className="w-full bg-navy text-white p-5 rounded-[2.5rem] shadow-2xl flex items-center justify-between group overflow-hidden relative border border-white/5"
             >
-              <div className="flex items-center gap-4">
-                <div className="bg-white/20 w-12 h-12 rounded-xl flex items-center justify-center relative">
-                  <ShoppingBag className="w-6 h-6" />
-                  <span className="absolute -top-2 -right-2 bg-brand-orange text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-brand-green">
+              <div className="flex items-center gap-5">
+                <div className="bg-white/10 w-12 h-12 rounded-2xl flex items-center justify-center relative">
+                  <ShoppingBag size={24} />
+                  <span className="absolute -top-2 -right-2 bg-gold text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-navy">
                     {cartCount}
                   </span>
                 </div>
                 <div className="text-left">
-                  <div className="text-xs font-black uppercase tracking-widest opacity-70">Voir le panier</div>
-                  <div className="text-lg font-black leading-none">{cartTotal.toLocaleString()} FCFA</div>
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Votre commande</p>
+                  <p className="text-lg font-black">{cartTotal.toLocaleString()} FCFA</p>
                 </div>
               </div>
-              <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16"></div>
+              <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform text-gold" />
             </button>
           </motion.div>
         )}
@@ -173,75 +175,66 @@ export default function ClientMenu() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsCartOpen(false)}
-              className="fixed inset-0 bg-brand-dark/40 backdrop-blur-sm z-[60]"
+              className="fixed inset-0 bg-navy/60 backdrop-blur-md z-[60]"
             />
             <motion.div
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed inset-x-0 bottom-0 bg-white rounded-t-[40px] z-[70] max-h-[85vh] flex flex-col shadow-2xl"
+              transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+              className="fixed inset-x-0 bottom-0 bg-white rounded-t-[3rem] z-[70] max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
             >
-              <div className="p-8 flex-1 overflow-y-auto">
-                <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-2xl font-black text-brand-dark">Votre Panier</h2>
-                  <button onClick={() => setIsCartOpen(false)} className="p-2 bg-gray-100 rounded-full"><X className="w-6 h-6" /></button>
+              <div className="p-10 flex-1 overflow-y-auto custom-scrollbar">
+                <div className="flex items-center justify-between mb-10">
+                  <h2 className="text-2xl font-black text-navy">Votre Panier</h2>
+                  <button onClick={() => setIsCartOpen(false)} className="w-10 h-10 bg-surface-2 rounded-full flex items-center justify-center text-navy"><X size={20} /></button>
                 </div>
 
                 <div className="space-y-6 mb-12">
                   {cart.map(item => (
-                    <div key={item.id} className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gray-50 rounded-xl overflow-hidden shrink-0">
+                    <div key={item.id} className="flex items-center gap-5">
+                      <div className="w-20 h-20 bg-surface-2 rounded-2xl overflow-hidden shrink-0">
                         <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1">
-                        <div className="flex items-center justify-between mb-1">
-                          <h4 className="font-black text-brand-dark truncate">{item.name}</h4>
-                          <span className="font-black text-brand-green text-sm">{ (item.price * item.quantity).toLocaleString() } FCFA</span>
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-bold text-navy truncate">{item.name}</h4>
+                          <span className="font-bold text-navy">{ (item.price * item.quantity).toLocaleString() } FCFA</span>
                         </div>
                         <div className="flex items-center justify-between">
-                           <div className="flex items-center gap-4 bg-gray-50 rounded-full py-1 px-3">
-                             <button onClick={() => removeFromCart(item.id)} className="text-brand-dark"><Minus className="w-3 h-3" /></button>
-                             <span className="font-black text-xs">{item.quantity}</span>
-                             <button onClick={() => addToCart(item)} className="text-brand-dark"><Plus className="w-3 h-3" /></button>
+                           <div className="flex items-center gap-5 bg-surface-2 rounded-full py-1.5 px-4 border border-border">
+                             <button onClick={() => removeFromCart(item.id)} className="text-navy"><Minus size={14} /></button>
+                             <span className="font-black text-sm">{item.quantity}</span>
+                             <button onClick={() => addToCart(item)} className="text-navy"><Plus size={14} /></button>
                            </div>
-                           <button onClick={() => setCart(prev => prev.filter(p => p.id !== item.id))} className="text-red-400 p-1"><Trash2 className="w-4 h-4" /></button>
+                           <button onClick={() => setCart(prev => prev.filter(p => p.id !== item.id))} className="text-danger hover:scale-110 transition-transform"><Trash2 size={18} /></button>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-3xl space-y-3 mb-8 border border-gray-100">
-                   <div className="flex justify-between text-sm font-medium text-gray-500">
-                     <span>Sous-total</span>
+                <div className="bg-surface-2 p-8 rounded-[2rem] space-y-4 mb-10 border border-border">
+                   <div className="flex justify-between text-xs font-black uppercase tracking-widest text-ink-muted">
+                     <span>Total Partiel</span>
                      <span>{cartTotal.toLocaleString()} FCFA</span>
                    </div>
-                   <div className="flex justify-between text-sm font-medium text-gray-500">
-                     <span>Frais de service (0%)</span>
-                     <span className="text-brand-green">Gratuit</span>
+                   <div className="flex justify-between text-xs font-black uppercase tracking-widest text-success">
+                     <span>Service PayDish</span>
+                     <span>Inclus</span>
                    </div>
-                   <div className="h-px bg-gray-200 my-2"></div>
-                   <div className="flex justify-between text-xl font-black text-brand-dark">
+                   <div className="h-px bg-border my-2"></div>
+                   <div className="flex justify-between text-2xl font-black text-navy">
                      <span>Total</span>
                      <span>{cartTotal.toLocaleString()} FCFA</span>
                    </div>
                 </div>
 
-                <div className="mb-8">
-                  <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Notes spéciales</label>
-                  <textarea 
-                    placeholder="Instructions (sans oignon, bien cuit...)" 
-                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-brand-green/20 h-24"
-                  ></textarea>
-                </div>
-
                 <button 
                   onClick={() => navigate('/paiement', { state: { cart, total: cartTotal } })}
-                  className="w-full bg-brand-green text-white py-5 rounded-[24px] font-black text-lg flex items-center justify-center gap-3 shadow-xl shadow-brand-green/20"
+                  className="w-full btn-gold py-6 flex items-center justify-center gap-3"
                 >
-                  Passer la commande
-                  <ChevronRight className="w-6 h-6" />
+                  Confirmer la commande <ChevronRight size={20} />
                 </button>
               </div>
             </motion.div>
