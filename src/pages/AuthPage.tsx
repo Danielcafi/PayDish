@@ -62,7 +62,7 @@ export default function AuthPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-white rounded-[2.5rem] p-10 md:p-12 shadow-2xl border border-border"
+              className="bg-surface-2 rounded-[2.5rem] p-10 md:p-12 border border-border"
             >
               <div className="text-center mb-10">
                 <h2 className="text-3xl font-normal text-forest mb-2 tracking-tight font-diplomata">
@@ -77,22 +77,22 @@ export default function AuthPage() {
                 {isSignup && (
                   <div className="space-y-4">
                     <div className="relative">
-                      <Store className="absolute left-5 top-1/2 -translate-y-1/2 text-ink-muted" size={18} />
-                      <input required type="text" placeholder="Nom de l'établissement" className="input-premium pl-14" />
+                      <Store className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-muted" size={18} />
+                      <input required type="text" placeholder="Nom de l'établissement" className="input-premium pl-16 pr-6" />
                     </div>
                     <div className="relative">
-                      <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-ink-muted" size={18} />
-                      <input required type="tel" placeholder="Numéro de téléphone" className="input-premium pl-14" />
+                      <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-muted" size={18} />
+                      <input required type="tel" placeholder="Numéro de téléphone" className="input-premium pl-16 pr-6" />
                     </div>
                   </div>
                 )}
                 <div className="relative">
-                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-ink-muted" size={18} />
-                  <input required type="email" placeholder="Adresse email" className="input-premium pl-14" />
+                  <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-muted" size={18} />
+                  <input required type="email" placeholder="Adresse email" className="input-premium pl-16 pr-6" />
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-ink-muted" size={18} />
-                  <input required type="password" placeholder="Mot de passe" className="input-premium pl-14" />
+                  <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-muted" size={18} />
+                  <input required type="password" placeholder="Mot de passe" className="input-premium pl-16 pr-6" />
                 </div>
 
                 <button 
@@ -140,7 +140,7 @@ export default function AuthPage() {
 
 function OnboardingStep1({ onNext }: { onNext: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white rounded-[2.5rem] p-12 shadow-2xl border border-border">
+    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-surface-2 rounded-[2.5rem] p-12 border border-border">
       <div className="text-center mb-10">
         <span className="section-label">Étape 1 sur 3</span>
         <h2 className="text-3xl font-normal text-forest mb-2 tracking-tight font-diplomata">Profil Restaurant</h2>
@@ -153,8 +153,8 @@ function OnboardingStep1({ onNext }: { onNext: () => void }) {
           <p className="mt-4 text-[10px] font-black uppercase text-ink-muted tracking-widest">Logo de l'établissement</p>
         </div>
         
-        <input type="text" placeholder="Adresse physique" className="input-premium" />
-        <textarea placeholder="Description de votre restaurant..." className="input-premium min-h-[120px] pt-4"></textarea>
+        <input type="text" placeholder="Adresse physique" className="input-premium px-6" />
+        <textarea placeholder="Description de votre restaurant..." className="input-premium min-h-[120px] pt-4 px-6"></textarea>
 
         <button onClick={onNext} className="w-full btn-primary py-5 flex items-center justify-center gap-3">
           Suivant <ArrowRight size={18} />
@@ -166,7 +166,7 @@ function OnboardingStep1({ onNext }: { onNext: () => void }) {
 
 function OnboardingStep2({ onNext, onBack }: { onNext: () => void, onBack: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white rounded-[2.5rem] p-12 shadow-2xl border border-border">
+    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-surface-2 rounded-[2.5rem] p-12 border border-border">
       <button onClick={onBack} className="flex items-center gap-2 text-ink-muted hover:text-sage transition-colors mb-8 text-xs font-bold uppercase tracking-widest">
         <ChevronLeft size={16} /> Retour
       </button>
@@ -194,7 +194,7 @@ function OnboardingStep2({ onNext, onBack }: { onNext: () => void, onBack: () =>
 
 function OnboardingStep3({ onFinish }: { onFinish: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white rounded-[2.5rem] p-12 shadow-2xl border border-border text-center">
+    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-surface-2 rounded-[2.5rem] p-12 border border-border text-center">
       <div className="w-20 h-20 bg-success/10 text-success rounded-full flex items-center justify-center mx-auto mb-8">
         <CheckCircle2 size={40} />
       </div>
@@ -203,7 +203,7 @@ function OnboardingStep3({ onFinish }: { onFinish: () => void }) {
       <p className="text-ink-muted font-medium mb-10">Votre restaurant est maintenant membre du réseau PayDish. Commençons à servir vos clients.</p>
       
       <div className="p-6 bg-forest text-white rounded-3xl mb-10 flex items-center gap-5 text-left border border-white/5">
-        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-forest">
+        <div className="w-12 h-12 bg-surface-2 rounded-xl flex items-center justify-center text-forest">
           <QrCode size={24} />
         </div>
         <div>

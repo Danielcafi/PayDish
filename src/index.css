@@ -87,7 +87,7 @@
 }
 
 .card-premium {
-  @apply bg-card-bg border border-border rounded-[2rem] p-8 transition-all duration-500 hover:shadow-xl hover:shadow-forest/5;
+  @apply bg-surface-2 border border-border rounded-[2rem] p-8 transition-all duration-500;
 }
 
 .glass-morphism {
@@ -108,6 +108,14 @@
 
 .section-label {
   @apply text-[10px] font-black uppercase tracking-[0.4em] text-sage mb-4 inline-block;
+}
+
+.input-premium {
+  @apply w-full bg-surface border border-border rounded-2xl py-4 text-sm font-medium outline-none focus:border-sage focus:ring-2 focus:ring-sage/10 transition-all text-forest placeholder:text-ink-muted/40;
+}
+
+.dark .input-premium {
+  @apply bg-surface-2 text-cream placeholder:text-ink-muted/60;
 }
 
 /* Custom Scrollbar */

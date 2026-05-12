@@ -51,7 +51,7 @@ export default function ClientPayment() {
             className="pb-32"
           >
             {/* Header */}
-            <div className="bg-white/80 backdrop-blur-xl p-6 flex items-center justify-between border-b border-border sticky top-0 z-50">
+            <div className="bg-surface-2/80 backdrop-blur-xl p-6 flex items-center justify-between border-b border-border sticky top-0 z-50">
               <div className="flex items-center gap-4">
                 <button onClick={() => navigate(-1)} className="w-10 h-10 bg-surface-2 rounded-full flex items-center justify-center text-forest shadow-sm"><ChevronLeft size={20} /></button>
                 <h1 className="text-xl font-black text-forest uppercase tracking-tight">Règlement</h1>
@@ -61,7 +61,7 @@ export default function ClientPayment() {
 
             <main className="p-6 max-w-screen-sm mx-auto space-y-10">
                {/* Order Recap Card */}
-               <div className="bg-white p-8 rounded-[2.5rem] border border-border shadow-sm">
+               <div className="bg-surface-2 p-8 rounded-[2.5rem] border border-border">
                   <span className="section-label mb-6">Récapitulatif</span>
                   <div className="space-y-4 mb-8">
                      {cart.map(item => (
@@ -91,7 +91,7 @@ export default function ClientPayment() {
                     <button
                       key={m.id}
                        onClick={() => setMethod(m.id as any)}
-                      className={`w-full p-6 rounded-[2rem] border-2 flex items-center gap-5 transition-all duration-300 ${method === m.id ? 'border-sage bg-white shadow-xl shadow-sage/5' : 'border-transparent bg-white shadow-sm hover:shadow-md'}`}
+                      className={`w-full p-6 rounded-[2rem] border-2 flex items-center gap-5 transition-all duration-300 ${method === m.id ? 'border-sage bg-surface-2' : 'border-transparent bg-surface-2'}`}
                     >
                       <div className={`${m.color} ${m.text} w-12 h-12 rounded-2xl flex items-center justify-center shadow-md`}>
                         <m.icon size={24} />
@@ -100,7 +100,7 @@ export default function ClientPayment() {
                         <div className="font-black text-forest text-base">{m.name}</div>
                         <div className="text-[10px] text-ink-muted font-black uppercase tracking-widest">Transaction sécurisée</div>
                       </div>
-                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${method === m.id ? 'bg-sage border-sage scale-110 shadow-lg shadow-sage/20' : 'border-border'}`}>
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${method === m.id ? 'bg-sage border-sage scale-110' : 'border-border'}`}>
                         {method === m.id && <Check className="w-4 h-4 text-white" />}
                       </div>
                     </button>
@@ -109,7 +109,7 @@ export default function ClientPayment() {
 
                {/* Phone Input Overlay if needed */}
                {(method === 'MoMo' || method === 'Moov' || method === 'Wave') && (
-                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-8 bg-white rounded-[2.5rem] border border-border shadow-sm">
+                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-8 bg-surface-2 rounded-[2.5rem] border border-border">
                     <span className="section-label mb-4">Numéro de téléphone</span>
                     <div className="relative">
                        <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-ink-muted opacity-40">+229</span>
@@ -118,7 +118,7 @@ export default function ClientPayment() {
                          value={phoneNumber}
                          onChange={(e) => setPhoneNumber(e.target.value)}
                          placeholder="00 00 00 00"
-                         className="input-premium pl-20"
+                         className="input-premium pl-20 pr-6"
                        />
                     </div>
                     <p className="mt-4 text-[10px] text-ink-muted font-medium italic leading-relaxed">
@@ -129,7 +129,7 @@ export default function ClientPayment() {
             </main>
 
             {/* Bottom Pay Button */}
-            <div className="fixed bottom-0 inset-x-0 p-8 bg-white/80 backdrop-blur-xl border-t border-border z-40 lg:max-w-screen-sm lg:left-1/2 lg:-translate-x-1/2 lg:rounded-t-[3rem] shadow-2xl">
+            <div className="fixed bottom-0 inset-x-0 p-8 bg-surface-2/80 backdrop-blur-xl border-t border-border z-40 lg:max-w-screen-sm lg:left-1/2 lg:-translate-x-1/2 lg:rounded-t-[3rem]">
                <button 
                 disabled={!method || (['MoMo', 'Moov', 'Wave'].includes(method) && phoneNumber.length < 8) || step === 'processing'}
                 onClick={handlePay}
@@ -160,7 +160,7 @@ export default function ClientPayment() {
             <h1 className="text-4xl font-black mb-4 text-center">Succès !</h1>
             <p className="text-white/60 font-bold mb-16 text-center">Votre paiement a été validé avec succès.</p>
 
-             <div className="w-full max-w-sm bg-white rounded-[3rem] p-10 text-forest shadow-2xl relative overflow-hidden">
+             <div className="w-full max-w-sm bg-surface rounded-[3rem] p-10 text-forest relative overflow-hidden">
                <div className="text-center mb-10">
                   <div className="inline-block bg-sage/10 p-3 rounded-2xl mb-6">
                      <img src="/logo.png" alt="PayDish" className="w-10 h-10 object-contain" />

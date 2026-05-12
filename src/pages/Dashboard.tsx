@@ -145,7 +145,7 @@ export default function Dashboard() {
                      { label: 'Temps moyen', value: '14 min', icon: Clock, trend: '-2m', color: 'text-success' },
                      { label: 'Satisfaction', value: '4.9/5', icon: Star, trend: null, color: 'text-sage' }
                    ].map((stat, i) => (
-                     <div key={i} className="bg-white p-6 rounded-[2rem] border border-border shadow-sm">
+                      <div key={i} className="bg-surface-2 p-6 rounded-[2rem] border border-border">
                         <div className="flex items-center justify-between mb-4">
                            <div className="w-10 h-10 bg-surface-2 rounded-xl flex items-center justify-center text-forest">
                               <stat.icon size={20} />
@@ -160,7 +160,7 @@ export default function Dashboard() {
 
                 {/* Main Graph Card */}
                 <div className="grid xl:grid-cols-3 gap-8">
-                   <div className="xl:col-span-2 bg-white rounded-[2.5rem] border border-border p-10 shadow-sm relative overflow-hidden">
+                   <div className="xl:col-span-2 bg-surface-2 rounded-[2.5rem] border border-border p-10 relative overflow-hidden">
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                          <div>
                             <h3 className="text-xl font-normal text-forest font-diplomata">Analyse des Revenus</h3>
@@ -207,7 +207,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Table Section */}
-                <div className="bg-white rounded-[2.5rem] border border-border shadow-sm overflow-hidden">
+                <div className="bg-surface-2 rounded-[2.5rem] border border-border overflow-hidden">
                    <div className="p-8 border-b border-border flex items-center justify-between">
                       <h3 className="text-xl font-normal text-forest font-diplomata">Commandes Récentes</h3>
                       <button className="text-[10px] font-black text-sage uppercase tracking-widest border-b-2 border-sage/20 hover:border-sage transition-all">Tout l'historique</button>
@@ -266,7 +266,7 @@ export default function Dashboard() {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                    <div className="flex gap-4">
                       {restaurant.categories.map((cat, i) => (
-                        <button key={i} className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${i === 0 ? 'bg-forest text-white shadow-lg' : 'bg-white border border-border text-ink-muted hover:text-forest'}`}>
+                        <button key={i} className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${i === 0 ? 'bg-forest text-white shadow-lg' : 'bg-surface-2 border border-border text-ink-muted hover:text-forest'}`}>
                            {cat.name}
                         </button>
                       ))}
@@ -278,12 +278,12 @@ export default function Dashboard() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                    {restaurant.menu.map((item, i) => (
-                     <div key={i} className="bg-white rounded-[2.5rem] border border-border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 group">
+                     <div key={i} className="bg-surface-2 rounded-[2.5rem] border border-border overflow-hidden">
                         <div className="h-56 relative overflow-hidden">
-                           <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                           <div className="absolute inset-0 bg-forest/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                              <button className="p-3 bg-white text-forest rounded-xl hover:bg-sage hover:text-white transition-colors shadow-xl"><Edit3 size={18}/></button>
-                              <button className="p-3 bg-white text-danger rounded-xl hover:bg-danger hover:text-white transition-colors shadow-xl"><Trash2 size={18}/></button>
+                           <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                           <div className="absolute inset-0 bg-forest/20 opacity-0 transition-opacity flex items-center justify-center gap-3">
+                              <button className="p-3 bg-surface-2 text-forest rounded-xl transition-colors shadow-xl"><Edit3 size={18}/></button>
+                              <button className="p-3 bg-surface-2 text-danger rounded-xl transition-colors shadow-xl"><Trash2 size={18}/></button>
                            </div>
                         </div>
                         <div className="p-8">
