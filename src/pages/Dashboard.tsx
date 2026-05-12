@@ -46,7 +46,7 @@ export default function Dashboard() {
   const restaurant = RESTAURANTS[0];
   
   return (
-    <div className="min-h-screen bg-surface flex selection:bg-sage/30 selection:text-forest transition-colors duration-500">
+    <div className="min-h-screen-dynamic bg-surface flex selection:bg-sage/30 selection:text-forest transition-colors duration-500">
       {/* Sidebar - Desktop */}
       <aside className="w-72 bg-surface dark:bg-forest hidden lg:flex flex-col text-forest dark:text-white border-r border-border relative z-20 transition-colors duration-500">
         <div className="p-10">

@@ -11,7 +11,7 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState('restaurants');
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen-dynamic bg-gray-100 flex flex-col">
       <header className="bg-brand-dark text-white p-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <img src="/logo.png" alt="PayDish Logo" className="h-10 w-auto" />

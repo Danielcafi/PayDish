@@ -45,7 +45,7 @@ export default function ClientScanner() {
   };
 
   return (
-    <div className="min-h-screen bg-forest flex flex-col text-white selection:bg-sage/30">
+    <div className="min-h-screen-dynamic bg-forest flex flex-col text-white selection:bg-sage/30">
       {/* Header */}
       <header className="p-8 flex items-center justify-between z-10">
         <button onClick={() => navigate(-1)} className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all"><ChevronLeft size={20} /></button>

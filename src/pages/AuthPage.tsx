@@ -44,7 +44,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-2 flex flex-col items-center justify-center p-6 relative overflow-hidden transition-colors duration-500">
+    <div className="min-h-screen-dynamic bg-surface-2 flex flex-col items-center justify-center p-6 relative overflow-hidden transition-colors duration-500">
       {/* Navigation Bar */}
       <nav className="absolute top-0 left-0 right-0 p-8 flex items-center justify-between z-50">
         <Link to="/" className="flex items-center gap-3">

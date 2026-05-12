@@ -6,10 +6,41 @@
     <title>PayDish — Scannez. Commandez. Payez.</title>
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#1DB954" />
+    <meta name="description" content="PayDish — La solution de paiement innovante pour les restaurants. Scannez, commandez et payez en toute simplicité." />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PayDish">
+    <link rel="apple-touch-icon" href="/logo.png">
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js');
+          navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then(registration => {
+              console.log('SW registered: ', registration);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New content available, but we'll let skipWaiting handle it
+                    console.log('New content available, please refresh.');
+                  }
+                });
+              });
+            })
+            .catch(registrationError => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+
+        // Handle controller change (reload on update)
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!refreshing) {
+            window.location.reload();
+            refreshing = true;
+          }
         });
       }
     </script>

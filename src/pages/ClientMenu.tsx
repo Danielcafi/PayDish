@@ -48,7 +48,7 @@ export default function ClientMenu() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-2 pb-24 transition-colors duration-500">
+    <div className="min-h-screen-dynamic bg-surface-2 pb-24 transition-colors duration-500">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-border px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">

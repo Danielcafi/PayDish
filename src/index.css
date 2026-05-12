@@ -49,11 +49,20 @@
 @layer base {
   body {
     @apply bg-surface text-ink font-serif transition-colors duration-500 antialiased;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-diplomata tracking-tight;
   }
+}
+
+.min-h-screen-dynamic {
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 /* Premium Components */

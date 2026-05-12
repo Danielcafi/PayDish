@@ -40,7 +40,7 @@ export default function ClientPayment() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-2 selection:bg-sage/30 transition-colors duration-500">
+    <div className="min-h-screen-dynamic bg-surface-2 selection:bg-sage/30 transition-colors duration-500">
       <AnimatePresence mode="wait">
         {step !== 'success' ? (
           <motion.div
@@ -151,7 +151,7 @@ export default function ClientPayment() {
             key="payment-success"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="min-h-screen bg-forest p-6 flex flex-col items-center justify-center text-white"
+            className="min-h-screen-dynamic bg-forest p-6 flex flex-col items-center justify-center text-white"
           >
             <div className="w-24 h-24 bg-sage rounded-full flex items-center justify-center mb-10 shadow-2xl animate-float">
               <CheckCircle2 size={48} className="text-forest" />

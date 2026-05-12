@@ -37,7 +37,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-surface selection:bg-sage/30 transition-colors duration-500">
+    <div className="min-h-screen-dynamic-dynamic bg-surface selection:bg-sage/30 transition-colors duration-500">
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'py-4 glass-morphism' : 'py-8 bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -64,14 +64,40 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden text-forest">
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+            className="lg:hidden text-forest p-2 hover:bg-forest/5 rounded-xl transition-colors"
+            aria-label="Toggle Menu"
+          >
             {mobileMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
           </button>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        <motion.div 
+          initial={false}
+          animate={mobileMenuOpen ? { x: 0, opacity: 1 } : { x: '100%', opacity: 0 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+          className="fixed inset-0 z-40 lg:hidden bg-surface flex flex-col pt-32 px-6"
+        >
+          <div className="flex flex-col gap-8 text-center">
+            <a href="#solutions" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-normal text-forest font-diplomata">Nos Atouts</a>
+            <a href="#experience" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-normal text-forest font-diplomata">L'Expérience</a>
+            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-normal text-forest font-diplomata">Contact</a>
+            <div className="h-[1px] bg-border w-1/4 mx-auto my-4"></div>
+            <Link to="/auth" onClick={() => setMobileMenuOpen(false)} className="text-xl font-bold text-ink">Connexion</Link>
+            <Link to="/auth?signup=true" onClick={() => setMobileMenuOpen(false)} className="btn-primary py-6">
+              Devenir Partenaire
+            </Link>
+            <div className="flex justify-center pt-4">
+              <ThemeToggle />
+            </div>
+          </div>
+        </motion.div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      <section className="relative min-h-screen-dynamic-dynamic flex items-center pt-20 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
            <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-sage/5 dark:bg-sage/10 blur-[120px] rounded-full transition-colors duration-1000"></div>
            <div className="absolute bottom-[-10%] right-[-5%] w-[50%] h-[50%] bg-forest/5 dark:bg-forest/10 blur-[150px] rounded-full transition-colors duration-1000"></div>
