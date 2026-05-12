@@ -49,7 +49,7 @@ export default function AuthPage() {
       <nav className="absolute top-0 left-0 right-0 p-8 flex items-center justify-between z-50">
         <Link to="/" className="flex items-center gap-3">
           <img src="/logo.png" alt="PayDish" className="h-10 w-auto" />
-          <span className="text-xl font-black text-navy uppercase">PayDish</span>
+          <span className="text-xl font-normal text-forest uppercase font-diplomata">PayDish</span>
         </Link>
         <ThemeToggle />
       </nav>
@@ -65,7 +65,7 @@ export default function AuthPage() {
               className="bg-white rounded-[2.5rem] p-10 md:p-12 shadow-2xl border border-border"
             >
               <div className="text-center mb-10">
-                <h2 className="text-3xl font-black text-navy mb-2 tracking-tight">
+                <h2 className="text-3xl font-normal text-forest mb-2 tracking-tight font-diplomata">
                   {isSignup ? 'Créer un compte' : 'Bon retour'}
                 </h2>
                 <p className="text-ink-muted font-medium text-sm">
@@ -107,7 +107,7 @@ export default function AuthPage() {
               <div className="mt-8 text-center">
                 <button 
                   onClick={() => setIsSignup(!isSignup)}
-                  className="text-sm font-bold text-ink-muted hover:text-gold transition-colors"
+                  className="text-sm font-bold text-ink-muted hover:text-sage transition-colors"
                 >
                   {isSignup ? 'Déjà un compte ? Connectez-vous' : 'Pas encore de compte ? S\'inscrire'}
                 </button>
@@ -143,12 +143,12 @@ function OnboardingStep1({ onNext }: { onNext: () => void }) {
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white rounded-[2.5rem] p-12 shadow-2xl border border-border">
       <div className="text-center mb-10">
         <span className="section-label">Étape 1 sur 3</span>
-        <h2 className="text-3xl font-black text-navy mb-2 tracking-tight">Profil Restaurant</h2>
+        <h2 className="text-3xl font-normal text-forest mb-2 tracking-tight font-diplomata">Profil Restaurant</h2>
       </div>
       <div className="space-y-8">
         <div className="flex flex-col items-center">
-          <div className="w-32 h-32 bg-surface-2 rounded-3xl flex items-center justify-center border-2 border-dashed border-border group cursor-pointer hover:border-gold transition-all duration-300 relative overflow-hidden">
-            <Upload className="text-ink-muted group-hover:text-gold transition-colors" size={32} />
+          <div className="w-32 h-32 bg-surface-2 rounded-3xl flex items-center justify-center border-2 border-dashed border-border group cursor-pointer hover:border-sage transition-all duration-300 relative overflow-hidden">
+            <Upload className="text-ink-muted group-hover:text-sage transition-colors" size={32} />
           </div>
           <p className="mt-4 text-[10px] font-black uppercase text-ink-muted tracking-widest">Logo de l'établissement</p>
         </div>
@@ -167,12 +167,12 @@ function OnboardingStep1({ onNext }: { onNext: () => void }) {
 function OnboardingStep2({ onNext, onBack }: { onNext: () => void, onBack: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white rounded-[2.5rem] p-12 shadow-2xl border border-border">
-      <button onClick={onBack} className="flex items-center gap-2 text-ink-muted hover:text-gold transition-colors mb-8 text-xs font-bold uppercase tracking-widest">
+      <button onClick={onBack} className="flex items-center gap-2 text-ink-muted hover:text-sage transition-colors mb-8 text-xs font-bold uppercase tracking-widest">
         <ChevronLeft size={16} /> Retour
       </button>
       <div className="text-center mb-10">
         <span className="section-label">Étape 2 sur 3</span>
-        <h2 className="text-3xl font-black text-navy mb-2 tracking-tight">Configuration Menu</h2>
+        <h2 className="text-3xl font-normal text-forest mb-2 tracking-tight font-diplomata">Configuration Menu</h2>
         <p className="text-ink-muted text-sm font-medium">Vous pourrez finaliser votre menu complet plus tard.</p>
       </div>
       
@@ -180,7 +180,7 @@ function OnboardingStep2({ onNext, onBack }: { onNext: () => void, onBack: () =>
         <div className="p-5 bg-surface-2 rounded-2xl border border-border border-dashed text-center">
            <p className="text-sm font-bold text-ink-muted">Menu vide pour l'instant</p>
         </div>
-        <button className="w-full py-4 border-2 border-dashed border-border rounded-2xl text-[10px] font-black text-ink-muted uppercase tracking-widest hover:border-gold hover:text-gold transition-all">
+        <button className="w-full py-4 border-2 border-dashed border-border rounded-2xl text-[10px] font-black text-ink-muted uppercase tracking-widest hover:border-sage hover:text-sage transition-all">
           + Ajouter un plat
         </button>
       </div>
@@ -199,20 +199,20 @@ function OnboardingStep3({ onFinish }: { onFinish: () => void }) {
         <CheckCircle2 size={40} />
       </div>
       
-      <h2 className="text-3xl font-black text-navy mb-4 tracking-tight">Tout est prêt !</h2>
+      <h2 className="text-3xl font-normal text-forest mb-4 tracking-tight font-diplomata">Tout est prêt !</h2>
       <p className="text-ink-muted font-medium mb-10">Votre restaurant est maintenant membre du réseau PayDish. Commençons à servir vos clients.</p>
       
-      <div className="p-6 bg-navy text-white rounded-3xl mb-10 flex items-center gap-5 text-left border border-white/5">
-        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-navy">
+      <div className="p-6 bg-forest text-white rounded-3xl mb-10 flex items-center gap-5 text-left border border-white/5">
+        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-forest">
           <QrCode size={24} />
         </div>
         <div>
-          <p className="text-[10px] font-black uppercase text-gold tracking-widest">Badge PayDish</p>
+          <p className="text-[10px] font-black uppercase text-sage tracking-widest">Badge PayDish</p>
           <p className="text-base font-bold">Système QR activé</p>
         </div>
       </div>
 
-      <button onClick={onFinish} className="w-full btn-gold py-5 flex items-center justify-center gap-3 mb-6">
+      <button onClick={onFinish} className="w-full btn-cafe py-5 flex items-center justify-center gap-3 mb-6">
         Accéder au Dashboard <Sparkles size={18} />
       </button>
     </motion.div>
