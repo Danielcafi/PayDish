@@ -106,7 +106,7 @@ export default function Dashboard() {
         {/* Header */}
         <header className="sticky top-0 z-30 bg-surface-2/80 backdrop-blur-md px-10 py-6 flex items-center justify-between border-b border-border transition-colors duration-500">
           <div>
-            <h1 className="text-2xl font-normal text-forest tracking-tight font-diplomata">Bienvenue, Adjoua.</h1>
+            <h1 className="text-2xl font-normal text-forest dark:text-cream tracking-tight font-diplomata">Bienvenue, Adjoua.</h1>
             <p className="text-ink-muted text-[10px] font-black uppercase tracking-[0.3em] mt-1">Samedi 2 Mai 2026</p>
           </div>
           <div className="flex items-center gap-4">
@@ -147,13 +147,13 @@ export default function Dashboard() {
                    ].map((stat, i) => (
                       <div key={i} className="bg-surface-2 p-6 rounded-[2rem] border border-border">
                         <div className="flex items-center justify-between mb-4">
-                           <div className="w-10 h-10 bg-surface-2 rounded-xl flex items-center justify-center text-forest">
+                           <div className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center text-forest dark:text-sage">
                               <stat.icon size={20} />
                            </div>
                            {stat.trend && <span className={`text-[10px] font-black ${stat.color}`}>{stat.trend}</span>}
                         </div>
                         <p className="text-[10px] font-black uppercase tracking-widest text-ink-muted mb-1">{stat.label}</p>
-                        <h3 className="text-2xl font-normal text-forest font-diplomata">{stat.value}</h3>
+                        <h3 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">{stat.value}</h3>
                      </div>
                    ))}
                 </div>
@@ -163,7 +163,7 @@ export default function Dashboard() {
                    <div className="xl:col-span-2 bg-surface-2 rounded-[2.5rem] border border-border p-10 relative overflow-hidden">
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                          <div>
-                            <h3 className="text-xl font-normal text-forest font-diplomata">Analyse des Revenus</h3>
+                            <h3 className="text-xl font-normal text-forest dark:text-cream font-diplomata">Analyse des Revenus</h3>
                             <p className="text-xs font-medium text-ink-muted mt-1">Comparaison des 7 derniers jours</p>
                          </div>
                          <div className="flex gap-2">
@@ -209,7 +209,7 @@ export default function Dashboard() {
                 {/* Table Section */}
                 <div className="bg-surface-2 rounded-[2.5rem] border border-border overflow-hidden">
                    <div className="p-8 border-b border-border flex items-center justify-between">
-                      <h3 className="text-xl font-normal text-forest font-diplomata">Commandes Récentes</h3>
+                      <h3 className="text-xl font-normal text-forest dark:text-cream font-diplomata">Commandes Récentes</h3>
                       <button className="text-[10px] font-black text-sage uppercase tracking-widest border-b-2 border-sage/20 hover:border-sage transition-all">Tout l'historique</button>
                    </div>
                    <div className="overflow-x-auto">
@@ -227,13 +227,13 @@ export default function Dashboard() {
                             {MOCK_ORDERS.map((order, i) => (
                                <tr key={i} className="hover:bg-surface-2 transition-colors">
                                   <td className="px-8 py-6">
-                                     <div className="text-sm font-bold text-forest">#PAY-{order.id.split('-')[1]}</div>
+                                     <div className="text-sm font-bold text-forest dark:text-cream">#PAY-{order.id.split('-')[1]}</div>
                                      <div className="text-[10px] text-ink-muted font-medium uppercase mt-1">Il y a 12 min</div>
                                   </td>
                                   <td className="px-8 py-6">
-                                     <span className="px-3 py-1 bg-surface-2 rounded-lg text-xs font-black text-forest border border-border">Table {order.tableNumber}</span>
+                                     <span className="px-3 py-1 bg-surface rounded-lg text-xs font-black text-forest dark:text-sage border border-border">Table {order.tableNumber}</span>
                                   </td>
-                                  <td className="px-8 py-6 font-bold text-sm text-forest">{order.total.toLocaleString()} FCFA</td>
+                                  <td className="px-8 py-6 font-bold text-sm text-forest dark:text-cream">{order.total.toLocaleString()} FCFA</td>
                                    <td className="px-8 py-6">
                                      <div className="flex items-center gap-2">
                                         <div className="w-2 h-2 rounded-full bg-sage"></div>
