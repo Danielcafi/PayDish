@@ -194,13 +194,9 @@ export default function LandingPage() {
             ].map((interest, i) => (
               <div 
                 key={i} 
-                className={`p-10 rounded-[2.5rem] border border-border shadow-sm transition-all duration-500 group relative overflow-hidden
-                  bg-white dark:bg-card-bg
-                  hover:shadow-xl hover:-translate-y-2
-                  max-md:${interest.bgColor} max-md:${interest.darkBg}
-                  hover:${interest.bgColor} hover:${interest.darkBg}`}
+                className="p-10 rounded-[2.5rem] border border-border transition-all duration-500 bg-surface-2 dark:bg-card-bg group relative overflow-hidden"
               >
-                <div className={`w-14 h-14 ${interest.bgColor} ${interest.darkBg} ${interest.iconColor} rounded-2xl flex items-center justify-center mb-8 transition-transform group-hover:scale-110 relative z-10 shadow-sm`}>
+                <div className={`w-14 h-14 ${interest.bgColor} ${interest.darkBg} ${interest.iconColor} rounded-2xl flex items-center justify-center mb-8 relative z-10`}>
                   <interest.icon size={28} />
                 </div>
                 <div className="relative z-10">
