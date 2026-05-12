@@ -48,11 +48,11 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-surface flex selection:bg-sage/30 selection:text-forest transition-colors duration-500">
       {/* Sidebar - Desktop */}
-      <aside className="w-72 bg-forest hidden lg:flex flex-col text-white relative z-20 shadow-2xl transition-colors duration-500">
+      <aside className="w-72 bg-surface dark:bg-forest hidden lg:flex flex-col text-forest dark:text-white border-r border-border relative z-20 transition-colors duration-500">
         <div className="p-10">
           <Link to="/" className="flex items-center gap-3 group">
             <img src="/logo.png" alt="PayDish" className="h-8 w-auto" />
-            <span className="text-xl font-normal tracking-tighter text-white uppercase font-diplomata">PayDish</span>
+            <span className="text-xl font-normal tracking-tighter text-forest dark:text-white uppercase font-diplomata">PayDish</span>
           </Link>
         </div>
 
@@ -70,15 +70,15 @@ export default function Dashboard() {
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all duration-300 font-bold text-sm ${
                 activeTab === item.id 
-                ? 'bg-white/10 text-sage shadow-sm shadow-black/20' 
-                : 'text-white/40 hover:text-white hover:bg-white/5'
+                ? 'bg-forest/5 dark:bg-white/10 text-sage' 
+                : 'text-ink-muted dark:text-white/40 hover:text-forest dark:hover:text-white hover:bg-forest/5 dark:hover:bg-white/5'
               }`}
             >
               <item.icon size={20} strokeWidth={activeTab === item.id ? 2.5 : 2} />
               {item.label}
               {item.badge && (
                 <span className={`ml-auto px-2 py-0.5 rounded-full text-[10px] font-black ${
-                  activeTab === item.id ? 'bg-sage text-forest' : 'bg-white/10 text-white/40'
+                  activeTab === item.id ? 'bg-sage text-forest dark:text-white' : 'bg-forest/10 dark:bg-white/10 text-ink-muted dark:text-white/40'
                 }`}>
                   {item.badge}
                 </span>
@@ -88,13 +88,13 @@ export default function Dashboard() {
         </nav>
 
         <div className="p-8 mt-auto">
-          <div className="bg-white/5 border border-white/10 p-5 rounded-3xl flex items-center gap-4">
-            <div className="w-10 h-10 bg-sage rounded-xl flex items-center justify-center font-black text-forest shadow-lg text-xs">AK</div>
+          <div className="bg-surface-2 dark:bg-white/5 border border-border dark:border-white/10 p-5 rounded-3xl flex items-center gap-4">
+            <div className="w-10 h-10 bg-sage rounded-xl flex items-center justify-center font-black text-white dark:text-forest shadow-lg text-xs">AK</div>
             <div className="flex-1 overflow-hidden">
-              <div className="text-xs font-bold truncate text-white">Adjoua Koffi</div>
-              <div className="text-[9px] text-white/30 font-black uppercase tracking-widest truncate">Le Bon Goût</div>
+              <div className="text-xs font-bold truncate text-forest dark:text-white">Adjoua Koffi</div>
+              <div className="text-[9px] text-ink-muted dark:text-white/30 font-black uppercase tracking-widest truncate">Le Bon Goût</div>
             </div>
-            <button className="text-white/20 hover:text-danger transition-colors">
+            <button className="text-ink-muted dark:text-white/20 hover:text-danger transition-colors">
               <LogOut size={18} />
             </button>
           </div>

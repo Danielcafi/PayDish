@@ -131,7 +131,7 @@ export default function AuthPage() {
       </div>
       
       {/* Subtle bottom text */}
-      <p className="absolute bottom-8 text-[10px] font-black uppercase tracking-[0.3em] text-ink-muted opacity-40">
+      <p className="mt-12 mb-8 text-[10px] font-black uppercase tracking-[0.3em] text-ink-muted">
         © 2026 PayDish Technologies S.A.
       </p>
     </div>
