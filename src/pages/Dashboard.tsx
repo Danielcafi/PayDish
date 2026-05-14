@@ -35,7 +35,9 @@ import {
   ChevronDown,
   MapPin,
   User,
-  ChevronLeft
+  ChevronLeft,
+  Wallet,
+  Download
 } from 'lucide-react';
 import { RESTAURANTS, MOCK_ORDERS } from '../data';
 import { Link } from 'react-router-dom';
@@ -61,7 +63,7 @@ export default function Dashboard() {
             { id: 'overview', icon: LayoutDashboard, label: 'Tableau de bord' },
             { id: 'orders', icon: ShoppingBag, label: 'Commandes', badge: '5' },
             { id: 'menu', icon: UtensilsCrossed, label: 'Carte Digitale' },
-            { id: 'tables', icon: TableIcon, label: 'Tables & QR' },
+            { id: 'qrcode', icon: QrCode, label: 'QR Code Menu' },
             { id: 'payments', icon: CreditCard, label: 'Finance' },
             { id: 'settings', icon: Settings, label: 'Paramètres' }
           ].map(item => (
@@ -306,7 +308,275 @@ export default function Dashboard() {
               </motion.div>
             )}
 
-            {/* Other tabs omitted for brevity but would follow the same premium pattern */}
+            {activeTab === 'orders' && (
+              <motion.div
+                key="orders"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-10"
+              >
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Gestion des Commandes</h2>
+                  <div className="flex gap-2">
+                    <button className="px-5 py-2.5 bg-surface-2 border border-border text-ink-muted rounded-xl text-[10px] font-black uppercase tracking-widest hover:text-forest transition-colors">Historique</button>
+                    <button className="px-5 py-2.5 bg-forest text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2"><Filter size={14} /> Filtrer</button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-x-auto pb-4">
+                  {/* Kanban Column: Nouvelles */}
+                  <div className="bg-surface-2/50 rounded-[2rem] p-6 border border-border/50 flex flex-col gap-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-xs font-black uppercase tracking-widest text-forest dark:text-cream flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-danger animate-pulse"></div>
+                        À Préparer
+                      </h3>
+                      <span className="bg-surface border border-border text-ink-muted text-[10px] font-black px-2 py-1 rounded-lg">1</span>
+                    </div>
+                    {MOCK_ORDERS.filter(o => o.status === 'pending').map(order => (
+                      <div key={order.id} className="bg-surface rounded-2xl p-5 border border-border shadow-sm hover:shadow-md transition-shadow cursor-grab">
+                        <div className="flex justify-between items-start mb-4">
+                           <span className="px-3 py-1 bg-surface-2 rounded-lg text-xs font-black text-forest border border-border">Table {order.tableNumber}</span>
+                           <span className="text-[10px] font-black text-ink-muted uppercase">12:45</span>
+                        </div>
+                        <ul className="space-y-2 mb-4">
+                          {order.items.map((item, i) => (
+                            <li key={i} className="text-sm font-medium text-forest dark:text-cream flex items-start gap-2">
+                              <span className="text-sage font-bold">{item.quantity}x</span> {item.name}
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="pt-4 border-t border-border flex justify-between items-center">
+                          <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">{order.total} FCFA</span>
+                          <button className="bg-sage/10 text-sage hover:bg-sage hover:text-forest px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors">
+                            Cuisiner
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Kanban Column: En Cuisine */}
+                  <div className="bg-surface-2/50 rounded-[2rem] p-6 border border-border/50 flex flex-col gap-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-xs font-black uppercase tracking-widest text-forest dark:text-cream flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-sage"></div>
+                        En Cuisine
+                      </h3>
+                      <span className="bg-surface border border-border text-ink-muted text-[10px] font-black px-2 py-1 rounded-lg">1</span>
+                    </div>
+                    {MOCK_ORDERS.filter(o => o.status === 'preparing').map(order => (
+                      <div key={order.id} className="bg-surface rounded-2xl p-5 border border-border shadow-sm hover:shadow-md transition-shadow cursor-grab">
+                        <div className="flex justify-between items-start mb-4">
+                           <span className="px-3 py-1 bg-surface-2 rounded-lg text-xs font-black text-forest border border-border">Table {order.tableNumber}</span>
+                           <span className="text-[10px] font-black text-sage uppercase">12:30</span>
+                        </div>
+                        <ul className="space-y-2 mb-4">
+                          {order.items.map((item, i) => (
+                            <li key={i} className="text-sm font-medium text-forest dark:text-cream flex items-start gap-2">
+                              <span className="text-sage font-bold">{item.quantity}x</span> {item.name}
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="pt-4 border-t border-border flex justify-between items-center">
+                           <div className="flex -space-x-2">
+                              <div className="w-6 h-6 rounded-full bg-forest text-white flex items-center justify-center text-[8px] font-bold border-2 border-surface">AK</div>
+                           </div>
+                           <button className="bg-success/10 text-success hover:bg-success hover:text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors">
+                            Servir
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Kanban Column: Prêtes */}
+                  <div className="bg-surface-2/50 rounded-[2rem] p-6 border border-border/50 flex flex-col gap-4 opacity-70">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-xs font-black uppercase tracking-widest text-ink-muted flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-ink-muted"></div>
+                        Servies
+                      </h3>
+                      <span className="bg-surface border border-border text-ink-muted text-[10px] font-black px-2 py-1 rounded-lg">0</span>
+                    </div>
+                    {/* Empty State */}
+                    <div className="flex flex-col items-center justify-center h-40 text-center border-2 border-dashed border-border rounded-2xl">
+                       <CheckCircle2 size={24} className="text-border mb-2" />
+                       <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">Aucune commande</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === 'qrcode' && (
+              <motion.div
+                key="qrcode"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="max-w-4xl mx-auto space-y-10 pb-10"
+              >
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                   <div>
+                      <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Menu QR Code</h2>
+                      <p className="text-xs font-medium text-ink-muted mt-1">Imprimez ce QR Code unique. Vos clients le scanneront pour commander et payer.</p>
+                   </div>
+                </div>
+
+                <div className="bg-surface-2 p-10 md:p-16 rounded-[3rem] border border-border flex flex-col md:flex-row items-center gap-16 relative overflow-hidden">
+                   {/* Visual Background Elements */}
+                   <div className="absolute top-[-20%] left-[-10%] w-96 h-96 bg-sage/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+                   {/* The QR Code Container */}
+                   <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl shrink-0 relative border-[8px] border-forest">
+                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-forest text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-lg">
+                         Scannez pour commander
+                      </div>
+                      <div className="w-48 h-48 sm:w-64 sm:h-64 bg-surface-2 rounded-2xl flex items-center justify-center p-4">
+                         {/* We simulate a QR code with an image or icon */}
+                         <img src={`https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://paydish.com/menu/${restaurant.id}&color=1C3F3A`} alt="QR Code" className="w-full h-full object-contain" />
+                      </div>
+                      <div className="mt-6 text-center">
+                         <img src="/logo.png" alt="PayDish" className="h-6 w-auto mx-auto mb-2 opacity-50" />
+                         <p className="text-[10px] font-black uppercase tracking-[0.2em] text-forest">PayDish.com</p>
+                      </div>
+                   </div>
+
+                   <div className="flex-1 space-y-8 text-center md:text-left relative z-10">
+                      <div>
+                         <h3 className="text-3xl font-normal text-forest font-diplomata mb-4">Un seul scan pour commander & payer.</h3>
+                         <p className="text-sm font-medium text-ink-muted leading-relaxed">
+                           Ce QR Code est universel. Placez-le sur toutes vos tables, au comptoir, ou à l'entrée. Vos clients n'ont plus besoin d'attendre la carte ou l'addition.
+                         </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                         <div className="bg-surface p-5 rounded-2xl border border-border">
+                            <div className="w-8 h-8 rounded-full bg-sage/20 text-sage flex items-center justify-center mb-3"><Download size={16}/></div>
+                            <div className="text-[10px] font-black uppercase tracking-widest text-forest">Télécharger PNG</div>
+                         </div>
+                         <div className="bg-surface p-5 rounded-2xl border border-border">
+                            <div className="w-8 h-8 rounded-full bg-forest/10 text-forest flex items-center justify-center mb-3"><Globe size={16}/></div>
+                            <div className="text-[10px] font-black uppercase tracking-widest text-forest">Copier le Lien</div>
+                         </div>
+                      </div>
+
+                      <button className="w-full btn-primary py-4 text-sm mt-4 shadow-xl shadow-sage/20">
+                         Commander des chevalets pré-imprimés
+                      </button>
+                   </div>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === 'payments' && (
+              <motion.div
+                key="payments"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-10"
+              >
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                   <div>
+                      <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Finance & Transactions</h2>
+                      <p className="text-xs font-medium text-ink-muted mt-1">Suivez vos encaissements Mobile Money et espèces.</p>
+                   </div>
+                   <button className="px-5 py-2.5 bg-surface-2 border border-border text-ink-muted rounded-xl text-[10px] font-black uppercase tracking-widest hover:text-forest transition-colors flex items-center gap-2">
+                      <Share2 size={14} /> Exporter CSV
+                   </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                   <div className="bg-forest text-white p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
+                      <div className="relative z-10">
+                         <p className="text-[10px] font-black uppercase tracking-widest text-white/60 mb-2">Solde Disponible</p>
+                         <h3 className="text-4xl font-normal font-diplomata mb-6">450,000 <span className="text-xl opacity-50">FCFA</span></h3>
+                         <button className="w-full bg-white text-forest py-3 rounded-xl font-black text-[11px] uppercase tracking-widest shadow-lg hover:bg-sage transition-colors">
+                            Retirer vers Banque
+                         </button>
+                      </div>
+                      <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-sage/20 rounded-full blur-3xl"></div>
+                   </div>
+
+                   <div className="md:col-span-2 bg-surface-2 p-8 rounded-[2rem] border border-border">
+                      <h3 className="text-sm font-black uppercase tracking-widest text-forest mb-6">Dernières Transactions</h3>
+                      <div className="space-y-4">
+                         {[
+                            { id: '#TR-001', amount: 8000, method: 'MoMo', time: '12:45', status: 'completed' },
+                            { id: '#TR-002', amount: 15000, method: 'Wave', time: '11:20', status: 'completed' },
+                            { id: '#TR-003', amount: 4500, method: 'Espèces', time: '10:05', status: 'completed' },
+                         ].map((tx, i) => (
+                            <div key={i} className="flex items-center justify-between p-4 bg-surface rounded-2xl border border-border hover:shadow-sm transition-shadow">
+                               <div className="flex items-center gap-4">
+                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tx.method === 'MoMo' ? 'bg-[#FFCC00]/20 text-[#FFCC00]' : tx.method === 'Wave' ? 'bg-[#1C51F1]/20 text-[#1C51F1]' : 'bg-surface-2 text-forest'}`}>
+                                     <Wallet size={18} />
+                                  </div>
+                                  <div>
+                                     <div className="text-sm font-bold text-forest">{tx.id}</div>
+                                     <div className="text-[10px] font-black uppercase tracking-widest text-ink-muted">{tx.method} • {tx.time}</div>
+                                  </div>
+                               </div>
+                               <div className="text-right">
+                                  <div className="text-sm font-bold text-forest">+{tx.amount.toLocaleString()}</div>
+                                  <div className="text-[10px] font-black uppercase tracking-widest text-success">Complété</div>
+                               </div>
+                            </div>
+                         ))}
+                      </div>
+                   </div>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === 'settings' && (
+              <motion.div
+                key="settings"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="max-w-3xl space-y-10 pb-10"
+              >
+                <div>
+                   <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Paramètres du Restaurant</h2>
+                   <p className="text-xs font-medium text-ink-muted mt-1">Gérez les informations publiques de votre établissement.</p>
+                </div>
+
+                <div className="bg-surface-2 p-8 md:p-10 rounded-[2.5rem] border border-border space-y-8">
+                   <div className="flex items-center gap-6">
+                      <div className="w-24 h-24 bg-surface rounded-3xl border border-border flex items-center justify-center overflow-hidden shadow-sm">
+                         <img src={restaurant.logo} alt="Logo" className="w-full h-full object-cover" />
+                      </div>
+                      <button className="px-5 py-2.5 bg-forest text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg">Changer le logo</button>
+                   </div>
+
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                         <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Nom du Restaurant</label>
+                         <input type="text" defaultValue={restaurant.name} className="input-premium w-full" />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Type d'établissement</label>
+                         <input type="text" defaultValue={restaurant.type} className="input-premium w-full" />
+                      </div>
+                      <div className="md:col-span-2 space-y-2">
+                         <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Description courte</label>
+                         <textarea defaultValue={restaurant.description} rows={3} className="input-premium w-full resize-none py-4"></textarea>
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Téléphone</label>
+                         <input type="text" defaultValue={restaurant.phone} className="input-premium w-full" />
+                      </div>
+                      <div className="space-y-2">
+                         <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Heures d'ouverture</label>
+                         <input type="text" defaultValue={restaurant.openingHours} className="input-premium w-full" />
+                      </div>
+                   </div>
+
+                   <div className="pt-8 border-t border-border flex justify-end">
+                      <button className="btn-primary">Sauvegarder les modifications</button>
+                   </div>
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       </main>

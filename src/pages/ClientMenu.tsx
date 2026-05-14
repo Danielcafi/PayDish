@@ -21,7 +21,7 @@ import { RESTAURANTS } from '../data';
 import { Plate, OrderItem } from '../types';
 
 export default function ClientMenu() {
-  const { restaurantId, tableId } = useParams();
+  const { restaurantId } = useParams();
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('Plats de Résistance');
   const [cart, setCart] = useState<OrderItem[]>([]);
@@ -57,9 +57,7 @@ export default function ClientMenu() {
           </div>
           <div>
             <h1 className="text-sm font-black text-navy uppercase tracking-tight">{restaurant.name}</h1>
-            <div className="flex items-center gap-1.5 mt-0.5">
-               <span className="text-[10px] font-black text-gold uppercase tracking-widest">Table {tableId || '7'}</span>
-            </div>
+               <span className="text-[10px] font-black text-gold uppercase tracking-widest">Commande Rapide</span>
           </div>
         </div>
         <button className="w-10 h-10 bg-surface-2 rounded-full flex items-center justify-center text-navy shadow-sm">

@@ -20,7 +20,7 @@ export default function App() {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/scan" element={<ClientScanner />} />
-        <Route path="/menu/:restaurantId/:tableId" element={<ClientMenu />} />
+        <Route path="/menu/:restaurantId" element={<ClientMenu />} />
         <Route path="/paiement" element={<ClientPayment />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="*" element={<Navigate to="/" replace />} />
