@@ -120,7 +120,7 @@
 }
 
 .input-premium {
-  @apply w-full bg-surface border border-border rounded-2xl py-4 text-sm font-medium outline-none focus:border-sage focus:ring-2 focus:ring-sage/10 transition-all text-forest placeholder:text-ink-muted/40;
+  @apply w-full bg-surface border border-border rounded-2xl py-4 px-6 text-sm font-medium outline-none focus:border-sage focus:ring-2 focus:ring-sage/10 transition-all text-forest placeholder:text-ink-muted/40;
 }
 
 .dark .input-premium {

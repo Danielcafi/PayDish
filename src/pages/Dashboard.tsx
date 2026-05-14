@@ -37,7 +37,8 @@ import {
   User,
   ChevronLeft,
   Wallet,
-  Download
+  Download,
+  X
 } from 'lucide-react';
 import { RESTAURANTS, MOCK_ORDERS } from '../data';
 import { Link } from 'react-router-dom';
@@ -45,6 +46,10 @@ import ThemeToggle from '../lib/ThemeToggle';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
+  const [isPlateModalOpen, setIsPlateModalOpen] = useState(false);
+  const [editingPlate, setEditingPlate] = useState<any>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deletingPlate, setDeletingPlate] = useState<any>(null);
   const restaurant = RESTAURANTS[0];
   
   return (
@@ -273,19 +278,19 @@ export default function Dashboard() {
                         </button>
                       ))}
                    </div>
-                   <button className="btn-primary flex items-center gap-2">
+                   <button onClick={() => { setEditingPlate(null); setIsPlateModalOpen(true); }} className="btn-primary flex items-center gap-2">
                       <Plus size={18} /> AJOUTER UN PLAT
                    </button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                    {restaurant.menu.map((item, i) => (
-                     <div key={i} className="bg-surface-2 rounded-[2.5rem] border border-border overflow-hidden">
+                     <div key={i} className="bg-surface-2 rounded-[2.5rem] border border-border overflow-hidden group">
                         <div className="h-56 relative overflow-hidden">
                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                           <div className="absolute inset-0 bg-forest/20 opacity-0 transition-opacity flex items-center justify-center gap-3">
-                              <button className="p-3 bg-surface-2 text-forest rounded-xl transition-colors shadow-xl"><Edit3 size={18}/></button>
-                              <button className="p-3 bg-surface-2 text-danger rounded-xl transition-colors shadow-xl"><Trash2 size={18}/></button>
+                           <div className="absolute inset-0 bg-forest/20 opacity-0 transition-opacity flex items-center justify-center gap-3 group-hover:opacity-100">
+                              <button onClick={() => { setEditingPlate(item); setIsPlateModalOpen(true); }} className="p-3 bg-surface-2 text-forest rounded-xl transition-colors shadow-xl hover:bg-sage hover:text-white"><Edit3 size={18}/></button>
+                              <button onClick={() => { setDeletingPlate(item); setIsDeleteModalOpen(true); }} className="p-3 bg-surface-2 text-danger rounded-xl transition-colors shadow-xl hover:bg-danger hover:text-white"><Trash2 size={18}/></button>
                            </div>
                         </div>
                         <div className="p-8">
@@ -580,6 +585,120 @@ export default function Dashboard() {
           </AnimatePresence>
         </div>
       </main>
+
+      {/* Modals */}
+      <AnimatePresence>
+        {isPlateModalOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsPlateModalOpen(false)}
+              className="fixed inset-0 bg-forest/60 backdrop-blur-md z-[60]"
+            />
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+              className="fixed inset-x-0 bottom-0 bg-surface rounded-t-[3rem] z-[70] max-h-[90vh] flex flex-col shadow-2xl overflow-hidden lg:max-w-2xl lg:left-1/2 lg:-translate-x-1/2 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 lg:rounded-[3rem]"
+            >
+              <div className="p-10 flex-1 overflow-y-auto custom-scrollbar">
+                <div className="flex items-center justify-between mb-10">
+                  <h2 className="text-2xl font-normal text-forest font-diplomata">
+                    {editingPlate ? 'Modifier le plat' : 'Nouveau Plat'}
+                  </h2>
+                  <button onClick={() => setIsPlateModalOpen(false)} className="w-10 h-10 bg-surface-2 rounded-full flex items-center justify-center text-forest hover:bg-forest hover:text-white transition-colors"><X size={20} /></button>
+                </div>
+
+                <form className="space-y-6">
+                  <div className="flex items-center gap-6">
+                    <div className="w-24 h-24 bg-surface-2 rounded-3xl border border-border border-dashed flex flex-col items-center justify-center text-ink-muted cursor-pointer hover:border-sage transition-colors overflow-hidden">
+                       {editingPlate ? (
+                          <img src={editingPlate.image} alt="Plate" className="w-full h-full object-cover" />
+                       ) : (
+                          <>
+                             <Plus size={24} className="mb-2" />
+                             <span className="text-[8px] font-black uppercase tracking-widest">Image</span>
+                          </>
+                       )}
+                    </div>
+                    <div className="flex-1 space-y-2">
+                       <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">URL de l'image</label>
+                       <input type="text" defaultValue={editingPlate?.image} placeholder="https://..." className="input-premium px-6 py-3" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Nom du plat</label>
+                      <input type="text" defaultValue={editingPlate?.name} className="input-premium px-6 py-3" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Prix (FCFA)</label>
+                      <input type="number" defaultValue={editingPlate?.price} className="input-premium px-6 py-3" />
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Description</label>
+                      <textarea defaultValue={editingPlate?.description} rows={3} className="input-premium px-6 py-4 resize-none"></textarea>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Catégorie</label>
+                      <select defaultValue={editingPlate?.category || restaurant.categories[0].name} className="input-premium px-6 py-3 appearance-none">
+                         {restaurant.categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                      </select>
+                    </div>
+                    <div className="flex items-end pb-3">
+                       <label className="flex items-center gap-3 cursor-pointer">
+                          <input type="checkbox" defaultChecked={editingPlate?.popular} className="w-5 h-5 rounded border-border text-sage focus:ring-sage/20 bg-surface-2 accent-sage" />
+                          <span className="text-xs font-bold text-forest">Plat Populaire (Top)</span>
+                       </label>
+                    </div>
+                  </div>
+
+                  <div className="pt-8 mt-8 border-t border-border flex justify-end gap-4">
+                    <button type="button" onClick={() => setIsPlateModalOpen(false)} className="px-8 py-4 rounded-full font-bold text-[13px] uppercase tracking-wider text-ink-muted hover:bg-surface-2 transition-colors">Annuler</button>
+                    <button type="button" onClick={() => setIsPlateModalOpen(false)} className="btn-primary">
+                       {editingPlate ? 'Sauvegarder' : 'Ajouter le plat'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </motion.div>
+          </>
+        )}
+
+        {isDeleteModalOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsDeleteModalOpen(false)}
+              className="fixed inset-0 bg-forest/60 backdrop-blur-md z-[60]"
+            />
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="fixed inset-x-4 top-1/2 -translate-y-1/2 bg-surface rounded-[2.5rem] z-[70] p-10 shadow-2xl lg:w-full lg:max-w-md lg:mx-auto lg:inset-x-auto border border-border"
+            >
+               <div className="w-16 h-16 bg-danger/10 text-danger rounded-2xl flex items-center justify-center mb-6">
+                  <Trash2 size={32} />
+               </div>
+               <h3 className="text-2xl font-normal text-forest font-diplomata mb-4">Supprimer ce plat ?</h3>
+               <p className="text-sm font-medium text-ink-muted mb-8">
+                  Êtes-vous sûr de vouloir supprimer <span className="font-bold text-forest">"{deletingPlate?.name}"</span> ? Cette action est irréversible.
+               </p>
+               <div className="flex gap-4">
+                  <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 rounded-2xl font-bold text-[13px] uppercase tracking-wider text-ink-muted bg-surface-2 hover:bg-border transition-colors">Annuler</button>
+                  <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 rounded-2xl font-bold text-[13px] uppercase tracking-wider text-white bg-danger shadow-lg shadow-danger/20 hover:brightness-110 transition-all">Supprimer</button>
+               </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
