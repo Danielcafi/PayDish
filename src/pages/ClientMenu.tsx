@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
@@ -24,11 +24,28 @@ export default function ClientMenu() {
   const { restaurantId } = useParams();
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('Plats de Résistance');
-  const [cart, setCart] = useState<OrderItem[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [cart, setCart] = useState<OrderItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(`paydish_cart_${restaurantId}`);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(`paydish_cart_${restaurantId}`, JSON.stringify(cart));
+  }, [cart, restaurantId]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   
   const restaurant = RESTAURANTS.find(r => r.id === restaurantId) || RESTAURANTS[0];
-  const filteredMenu = restaurant.menu.filter(p => p.category === activeCategory);
+  const filteredMenu = restaurant.menu.filter(p => {
+    const matchesCategory = p.category === activeCategory;
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return isSearchOpen ? matchesSearch : matchesCategory;
+  });
 
   const cartTotal = useMemo(() => cart.reduce((acc, item) => acc + (item.price * item.quantity), 0), [cart]);
   const cartCount = useMemo(() => cart.reduce((acc, item) => acc + item.quantity, 0), [cart]);
@@ -60,10 +77,39 @@ export default function ClientMenu() {
                <span className="text-[10px] font-black text-gold uppercase tracking-widest">Commande Rapide</span>
           </div>
         </div>
-        <button className="w-10 h-10 bg-surface-2 rounded-full flex items-center justify-center text-navy shadow-sm">
+        <button onClick={() => setIsSearchOpen(!isSearchOpen)} className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm transition-colors ${isSearchOpen ? 'bg-navy text-white' : 'bg-surface-2 text-navy'}`}>
            <Search size={18} />
         </button>
       </header>
+
+      {/* Search Bar Dropdown */}
+      <AnimatePresence>
+        {isSearchOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="px-6 py-4 bg-white/80 backdrop-blur-xl border-b border-border overflow-hidden"
+          >
+            <div className="relative">
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-muted" />
+              <input
+                autoFocus
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Rechercher un plat..."
+                className="w-full bg-surface-2 rounded-xl py-3 pl-10 pr-4 text-sm font-bold text-navy outline-none border border-border focus:border-navy transition-colors"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted hover:text-navy">
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Categories */}
       <div className="sticky top-[73px] z-30 bg-white/50 backdrop-blur-md border-b border-border overflow-x-auto pwa-hide-scrollbar">
@@ -229,7 +275,7 @@ export default function ClientMenu() {
                 </div>
 
                 <button 
-                  onClick={() => navigate('/paiement', { state: { cart, total: cartTotal } })}
+                  onClick={() => navigate('/paiement', { state: { cart, total: cartTotal, restaurantId } })}
                   className="w-full btn-gold py-6 flex items-center justify-center gap-3"
                 >
                   Confirmer la commande <ChevronRight size={20} />

@@ -23,7 +23,7 @@ export default function ClientPayment() {
   const location = useLocation();
   const navigate = useNavigate();
   const [step, setStep] = useState<'selection' | 'processing' | 'success'>('selection');
-  const [method, setMethod] = useState<'MoMo' | 'Moov' | 'Wave' | 'Card' | 'Cash' | null>(null);
+  const [method, setMethod] = useState<'MoMo' | 'Moov' | 'Celtiis' | 'Card' | 'Cash' | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const cart = location.state?.cart as OrderItem[] || [];
@@ -33,10 +33,17 @@ export default function ClientPayment() {
     return <div className="p-8 text-center font-bold">Votre panier est vide.</div>;
   }
 
+  const restaurantId = location.state?.restaurantId;
+
   const handlePay = () => {
     if (!method) return;
     setStep('processing');
-    setTimeout(() => setStep('success'), 3000);
+    setTimeout(() => {
+       setStep('success');
+       if (restaurantId) {
+          localStorage.removeItem(`paydish_cart_${restaurantId}`);
+       }
+    }, 3000);
   };
 
   return (
@@ -84,7 +91,7 @@ export default function ClientPayment() {
                   {[
                     { id: 'MoMo', name: 'MTN Mobile Money', icon: Smartphone, color: 'bg-[#FFCC00]', text: 'text-black' },
                     { id: 'Moov', name: 'Moov Money', icon: Smartphone, color: 'bg-[#007DC5]', text: 'text-white' },
-                    { id: 'Wave', name: 'Wave', icon: Wallet, color: 'bg-[#1C51F1]', text: 'text-white' },
+                    { id: 'Celtiis', name: 'Celtiis', icon: Smartphone, color: 'bg-[#E3000F]', text: 'text-white' },
                     { id: 'Card', name: 'Carte Bancaire', icon: CreditCard, color: 'bg-forest', text: 'text-white' },
                     { id: 'Cash', name: 'Espèces', icon: Check, color: 'bg-gray-100', text: 'text-gray-600' }
                   ].map((m) => (

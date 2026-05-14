@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   LayoutDashboard, 
@@ -56,6 +56,11 @@ export default function Dashboard() {
   const [activeCategory, setActiveCategory] = useState(restaurant.categories[0].name);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    setSearchQuery('');
+  }, [activeTab]);
   
   return (
     <div className="min-h-screen-dynamic bg-surface flex selection:bg-sage/30 selection:text-forest transition-colors duration-500">
@@ -124,7 +129,18 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-surface rounded-xl border border-border">
                <Search size={16} className="text-ink-muted" />
-               <input type="text" placeholder="Rechercher..." className="bg-transparent text-xs font-medium outline-none w-40" />
+               <input 
+                 type="text" 
+                 value={searchQuery} 
+                 onChange={(e) => setSearchQuery(e.target.value)} 
+                 placeholder={
+                   activeTab === 'menu' ? "Rechercher un plat..." :
+                   activeTab === 'orders' ? "N° Table ou ID Commande..." :
+                   activeTab === 'payments' ? "Transaction ou méthode..." :
+                   "Rechercher..."
+                 } 
+                 className="bg-transparent text-xs font-medium outline-none w-48" 
+               />
             </div>
             <ThemeToggle />
             <div className="w-[1px] h-8 bg-border mx-2"></div>
@@ -312,7 +328,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                   {restaurant.menu.filter(p => p.category === activeCategory).map((item, i) => (
+                   {restaurant.menu.filter(p => p.category === activeCategory && p.name.toLowerCase().includes(searchQuery.toLowerCase())).map((item, i) => (
                      <div key={i} className="bg-surface-2 rounded-[2.5rem] border border-border overflow-hidden group">
                         <div className="h-56 relative overflow-hidden">
                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
@@ -378,7 +394,7 @@ export default function Dashboard() {
                       </h3>
                       <span className="bg-surface border border-border text-ink-muted text-[10px] font-black px-2 py-1 rounded-lg">1</span>
                     </div>
-                    {MOCK_ORDERS.filter(o => o.status === 'pending').map(order => (
+                    {MOCK_ORDERS.filter(o => o.status === 'pending' && (o.id.toLowerCase().includes(searchQuery.toLowerCase()) || o.tableNumber.toString().includes(searchQuery))).map(order => (
                       <div key={order.id} className="bg-surface rounded-2xl p-5 border border-border shadow-sm hover:shadow-md transition-shadow cursor-grab">
                         <div className="flex justify-between items-start mb-4">
                            <span className="px-3 py-1 bg-surface-2 rounded-lg text-xs font-black text-forest border border-border">Table {order.tableNumber}</span>
@@ -410,7 +426,7 @@ export default function Dashboard() {
                       </h3>
                       <span className="bg-surface border border-border text-ink-muted text-[10px] font-black px-2 py-1 rounded-lg">1</span>
                     </div>
-                    {MOCK_ORDERS.filter(o => o.status === 'preparing').map(order => (
+                    {MOCK_ORDERS.filter(o => o.status === 'preparing' && (o.id.toLowerCase().includes(searchQuery.toLowerCase()) || o.tableNumber.toString().includes(searchQuery))).map(order => (
                       <div key={order.id} className="bg-surface rounded-2xl p-5 border border-border shadow-sm hover:shadow-md transition-shadow cursor-grab">
                         <div className="flex justify-between items-start mb-4">
                            <span className="px-3 py-1 bg-surface-2 rounded-lg text-xs font-black text-forest border border-border">Table {order.tableNumber}</span>
@@ -547,13 +563,13 @@ export default function Dashboard() {
                       <h3 className="text-sm font-black uppercase tracking-widest text-forest mb-6">Dernières Transactions</h3>
                       <div className="space-y-4">
                          {[
-                            { id: '#TR-001', amount: 8000, method: 'MoMo', time: '12:45', status: 'completed' },
-                            { id: '#TR-002', amount: 15000, method: 'Wave', time: '11:20', status: 'completed' },
-                            { id: '#TR-003', amount: 4500, method: 'Espèces', time: '10:05', status: 'completed' },
-                         ].map((tx, i) => (
+                            { id: '#TR-001', amount: 8000, method: 'MTN MoMo', time: '12:45', status: 'completed' },
+                            { id: '#TR-002', amount: 15000, method: 'Moov Money', time: '11:20', status: 'completed' },
+                            { id: '#TR-003', amount: 4500, method: 'Celtiis', time: '10:05', status: 'completed' },
+                         ].filter(tx => tx.id.toLowerCase().includes(searchQuery.toLowerCase()) || tx.method.toLowerCase().includes(searchQuery.toLowerCase())).map((tx, i) => (
                             <div key={i} className="flex items-center justify-between p-4 bg-surface rounded-2xl border border-border hover:shadow-sm transition-shadow">
                                <div className="flex items-center gap-4">
-                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tx.method === 'MoMo' ? 'bg-[#FFCC00]/20 text-[#FFCC00]' : tx.method === 'Wave' ? 'bg-[#1C51F1]/20 text-[#1C51F1]' : 'bg-surface-2 text-forest'}`}>
+                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tx.method === 'MTN MoMo' ? 'bg-[#FFCC00]/20 text-[#FFCC00]' : tx.method === 'Moov Money' ? 'bg-[#007DC5]/20 text-[#007DC5]' : tx.method === 'Celtiis' ? 'bg-[#E3000F]/20 text-[#E3000F]' : 'bg-surface-2 text-forest'}`}>
                                      <Wallet size={18} />
                                   </div>
                                   <div>
