@@ -41,7 +41,7 @@ import {
   X
 } from 'lucide-react';
 import { RESTAURANTS, MOCK_ORDERS } from '../data';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ThemeToggle from '../lib/ThemeToggle';
 
 export default function Dashboard() {
@@ -50,7 +50,12 @@ export default function Dashboard() {
   const [editingPlate, setEditingPlate] = useState<any>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingPlate, setDeletingPlate] = useState<any>(null);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const restaurant = RESTAURANTS[0];
+  const navigate = useNavigate();
+  const [activeCategory, setActiveCategory] = useState(restaurant.categories[0].name);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   
   return (
     <div className="min-h-screen-dynamic bg-surface flex selection:bg-sage/30 selection:text-forest transition-colors duration-500">
@@ -101,7 +106,7 @@ export default function Dashboard() {
               <div className="text-xs font-bold truncate text-forest dark:text-white">Adjoua Koffi</div>
               <div className="text-[9px] text-ink-muted dark:text-white/30 font-black uppercase tracking-widest truncate">Le Bon Goût</div>
             </div>
-            <button className="text-ink-muted dark:text-white/20 hover:text-danger transition-colors">
+            <button onClick={() => navigate('/auth')} className="text-ink-muted dark:text-white/20 hover:text-danger transition-colors">
               <LogOut size={18} />
             </button>
           </div>
@@ -123,11 +128,34 @@ export default function Dashboard() {
             </div>
             <ThemeToggle />
             <div className="w-[1px] h-8 bg-border mx-2"></div>
-            <button className="p-3 bg-surface rounded-xl border border-border text-ink-muted relative hover:text-sage transition-colors shadow-sm">
-              <Bell size={20} />
-              <div className="absolute top-2.5 right-2.5 w-2 h-2 bg-danger rounded-full border-2 border-surface"></div>
-            </button>
-            <button className="btn-primary flex items-center gap-2 h-12">
+            <div className="relative">
+               <button onClick={() => setIsNotificationsOpen(!isNotificationsOpen)} className="p-3 bg-surface rounded-xl border border-border text-ink-muted relative hover:text-sage transition-colors shadow-sm">
+                 <Bell size={20} />
+                 <div className="absolute top-2.5 right-2.5 w-2 h-2 bg-danger rounded-full border-2 border-surface"></div>
+               </button>
+               
+               <AnimatePresence>
+                 {isNotificationsOpen && (
+                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute right-0 mt-4 w-80 bg-white dark:bg-forest border border-border rounded-2xl shadow-2xl z-50 overflow-hidden">
+                      <div className="p-4 border-b border-border flex justify-between items-center">
+                         <h3 className="font-bold text-forest dark:text-cream text-sm">Notifications</h3>
+                         <span className="text-[10px] font-black uppercase text-sage cursor-pointer hover:brightness-110">Marquer lu</span>
+                      </div>
+                      <div className="p-2">
+                         <div className="p-3 hover:bg-surface-2 dark:hover:bg-white/5 rounded-xl transition-colors cursor-pointer">
+                            <div className="text-xs font-bold text-forest dark:text-cream">Nouvelle commande #TR-004</div>
+                            <div className="text-[10px] text-ink-muted mt-1">Table 4 • Il y a 2 min</div>
+                         </div>
+                         <div className="p-3 hover:bg-surface-2 dark:hover:bg-white/5 rounded-xl transition-colors cursor-pointer">
+                            <div className="text-xs font-bold text-forest dark:text-cream">Stock d'Atassi critique</div>
+                            <div className="text-[10px] text-danger mt-1">Plus que 2 portions • Il y a 1h</div>
+                         </div>
+                      </div>
+                   </motion.div>
+                 )}
+               </AnimatePresence>
+            </div>
+            <button onClick={() => { setEditingPlate(null); setIsPlateModalOpen(true); }} className="btn-primary flex items-center gap-2 h-12">
               <Plus size={18} />
               NOUVEAU PLAT
             </button>
@@ -271,9 +299,9 @@ export default function Dashboard() {
                 className="space-y-10"
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                   <div className="flex gap-4">
+                   <div className="flex gap-4 overflow-x-auto pb-2 custom-scrollbar">
                       {restaurant.categories.map((cat, i) => (
-                        <button key={i} className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${i === 0 ? 'bg-forest text-white shadow-lg' : 'bg-surface-2 border border-border text-ink-muted hover:text-forest'}`}>
+                        <button key={i} onClick={() => setActiveCategory(cat.name)} className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeCategory === cat.name ? 'bg-forest text-white shadow-lg' : 'bg-surface-2 border border-border text-ink-muted hover:text-forest'}`}>
                            {cat.name}
                         </button>
                       ))}
@@ -284,7 +312,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                   {restaurant.menu.map((item, i) => (
+                   {restaurant.menu.filter(p => p.category === activeCategory).map((item, i) => (
                      <div key={i} className="bg-surface-2 rounded-[2.5rem] border border-border overflow-hidden group">
                         <div className="h-56 relative overflow-hidden">
                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
@@ -322,9 +350,21 @@ export default function Dashboard() {
               >
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Gestion des Commandes</h2>
-                  <div className="flex gap-2">
-                    <button className="px-5 py-2.5 bg-surface-2 border border-border text-ink-muted rounded-xl text-[10px] font-black uppercase tracking-widest hover:text-forest transition-colors">Historique</button>
-                    <button className="px-5 py-2.5 bg-forest text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2"><Filter size={14} /> Filtrer</button>
+                  <div className="flex gap-2 relative">
+                    <button onClick={() => setIsHistoryOpen(true)} className="px-5 py-2.5 bg-surface-2 border border-border text-ink-muted rounded-xl text-[10px] font-black uppercase tracking-widest hover:text-forest transition-colors">Historique</button>
+                    <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="px-5 py-2.5 bg-forest text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2"><Filter size={14} /> Filtrer</button>
+                    
+                    <AnimatePresence>
+                      {isFilterOpen && (
+                         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-forest border border-border rounded-xl shadow-xl z-20 overflow-hidden">
+                            <div className="p-2 space-y-1">
+                               <button onClick={() => setIsFilterOpen(false)} className="w-full text-left px-4 py-2 text-xs font-bold text-forest dark:text-cream hover:bg-surface-2 dark:hover:bg-white/5 rounded-lg transition-colors">Aujourd'hui</button>
+                               <button onClick={() => setIsFilterOpen(false)} className="w-full text-left px-4 py-2 text-xs font-bold text-ink-muted hover:bg-surface-2 dark:hover:bg-white/5 rounded-lg transition-colors">Cette semaine</button>
+                               <button onClick={() => setIsFilterOpen(false)} className="w-full text-left px-4 py-2 text-xs font-bold text-ink-muted hover:bg-surface-2 dark:hover:bg-white/5 rounded-lg transition-colors">Ce mois</button>
+                            </div>
+                         </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
 
@@ -353,7 +393,7 @@ export default function Dashboard() {
                         </ul>
                         <div className="pt-4 border-t border-border flex justify-between items-center">
                           <span className="text-[10px] font-black text-ink-muted uppercase tracking-widest">{order.total} FCFA</span>
-                          <button className="bg-sage/10 text-sage hover:bg-sage hover:text-forest px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors">
+                          <button onClick={() => alert("La commande passe en cuisine !")} className="bg-sage/10 text-sage hover:bg-sage hover:text-forest px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors">
                             Cuisiner
                           </button>
                         </div>
@@ -387,7 +427,7 @@ export default function Dashboard() {
                            <div className="flex -space-x-2">
                               <div className="w-6 h-6 rounded-full bg-forest text-white flex items-center justify-center text-[8px] font-bold border-2 border-surface">AK</div>
                            </div>
-                           <button className="bg-success/10 text-success hover:bg-success hover:text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors">
+                           <button onClick={() => alert("La commande est marquée comme servie !")} className="bg-success/10 text-success hover:bg-success hover:text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors">
                             Servir
                           </button>
                         </div>
@@ -486,7 +526,7 @@ export default function Dashboard() {
                       <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Finance & Transactions</h2>
                       <p className="text-xs font-medium text-ink-muted mt-1">Suivez vos encaissements Mobile Money et espèces.</p>
                    </div>
-                   <button className="px-5 py-2.5 bg-surface-2 border border-border text-ink-muted rounded-xl text-[10px] font-black uppercase tracking-widest hover:text-forest transition-colors flex items-center gap-2">
+                   <button onClick={() => alert("Génération du rapport CSV en cours...")} className="px-5 py-2.5 bg-surface-2 border border-border text-ink-muted rounded-xl text-[10px] font-black uppercase tracking-widest hover:text-forest transition-colors flex items-center gap-2">
                       <Share2 size={14} /> Exporter CSV
                    </button>
                 </div>
@@ -496,7 +536,7 @@ export default function Dashboard() {
                       <div className="relative z-10">
                          <p className="text-[10px] font-black uppercase tracking-widest text-white/60 mb-2">Solde Disponible</p>
                          <h3 className="text-4xl font-normal font-diplomata mb-6">450,000 <span className="text-xl opacity-50">FCFA</span></h3>
-                         <button className="w-full bg-white text-forest py-3 rounded-xl font-black text-[11px] uppercase tracking-widest shadow-lg hover:bg-sage transition-colors">
+                         <button onClick={() => alert("Redirection vers la passerelle bancaire...")} className="w-full bg-white text-forest py-3 rounded-xl font-black text-[11px] uppercase tracking-widest shadow-lg hover:bg-sage transition-colors">
                             Retirer vers Banque
                          </button>
                       </div>
@@ -550,7 +590,7 @@ export default function Dashboard() {
                       <div className="w-24 h-24 bg-surface rounded-3xl border border-border flex items-center justify-center overflow-hidden shadow-sm">
                          <img src={restaurant.logo} alt="Logo" className="w-full h-full object-cover" />
                       </div>
-                      <button className="px-5 py-2.5 bg-forest text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg">Changer le logo</button>
+                      <button onClick={() => alert("Sélecteur d'image ouvert")} className="px-5 py-2.5 bg-forest text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg">Changer le logo</button>
                    </div>
 
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -577,7 +617,7 @@ export default function Dashboard() {
                    </div>
 
                    <div className="pt-8 border-t border-border flex justify-end">
-                      <button className="btn-primary">Sauvegarder les modifications</button>
+                      <button onClick={() => alert("Paramètres sauvegardés avec succès !")} className="btn-primary">Sauvegarder les modifications</button>
                    </div>
                 </div>
               </motion.div>
@@ -602,25 +642,25 @@ export default function Dashboard() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-              className="fixed inset-x-0 bottom-0 bg-surface rounded-t-[3rem] z-[70] max-h-[90vh] flex flex-col shadow-2xl overflow-hidden lg:max-w-2xl lg:left-1/2 lg:-translate-x-1/2 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 lg:rounded-[3rem]"
+              className="fixed inset-x-0 bottom-0 bg-surface rounded-t-[3rem] z-[70] flex flex-col shadow-2xl overflow-hidden lg:max-w-2xl lg:left-1/2 lg:-translate-x-1/2 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 lg:rounded-[3rem]"
             >
-              <div className="p-10 flex-1 overflow-y-auto custom-scrollbar">
-                <div className="flex items-center justify-between mb-10">
+              <div className="p-8 flex-1">
+                <div className="flex items-center justify-between mb-8">
                   <h2 className="text-2xl font-normal text-forest font-diplomata">
                     {editingPlate ? 'Modifier le plat' : 'Nouveau Plat'}
                   </h2>
                   <button onClick={() => setIsPlateModalOpen(false)} className="w-10 h-10 bg-surface-2 rounded-full flex items-center justify-center text-forest hover:bg-forest hover:text-white transition-colors"><X size={20} /></button>
                 </div>
 
-                <form className="space-y-6">
+                <form className="space-y-5">
                   <div className="flex items-center gap-6">
-                    <div className="w-24 h-24 bg-surface-2 rounded-3xl border border-border border-dashed flex flex-col items-center justify-center text-ink-muted cursor-pointer hover:border-sage transition-colors overflow-hidden">
+                    <div className="w-20 h-20 bg-surface-2 rounded-2xl border border-border border-dashed flex flex-col items-center justify-center text-ink-muted cursor-pointer hover:border-sage transition-colors overflow-hidden">
                        {editingPlate ? (
                           <img src={editingPlate.image} alt="Plate" className="w-full h-full object-cover" />
                        ) : (
                           <>
-                             <Plus size={24} className="mb-2" />
-                             <span className="text-[8px] font-black uppercase tracking-widest">Image</span>
+                             <Plus size={20} className="mb-1" />
+                             <span className="text-[7px] font-black uppercase tracking-widest">Image</span>
                           </>
                        )}
                     </div>
@@ -630,7 +670,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="space-y-2">
                       <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Nom du plat</label>
                       <input type="text" defaultValue={editingPlate?.name} className="input-premium px-6 py-3" />
@@ -641,7 +681,7 @@ export default function Dashboard() {
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Description</label>
-                      <textarea defaultValue={editingPlate?.description} rows={3} className="input-premium px-6 py-4 resize-none"></textarea>
+                      <textarea defaultValue={editingPlate?.description} rows={2} className="input-premium px-6 py-3 resize-none"></textarea>
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Catégorie</label>
@@ -657,7 +697,7 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="pt-8 mt-8 border-t border-border flex justify-end gap-4">
+                  <div className="pt-6 mt-6 border-t border-border flex justify-end gap-4">
                     <button type="button" onClick={() => setIsPlateModalOpen(false)} className="px-8 py-4 rounded-full font-bold text-[13px] uppercase tracking-wider text-ink-muted hover:bg-surface-2 transition-colors">Annuler</button>
                     <button type="button" onClick={() => setIsPlateModalOpen(false)} className="btn-primary">
                        {editingPlate ? 'Sauvegarder' : 'Ajouter le plat'}
@@ -694,6 +734,35 @@ export default function Dashboard() {
                <div className="flex gap-4">
                   <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 rounded-2xl font-bold text-[13px] uppercase tracking-wider text-ink-muted bg-surface-2 hover:bg-border transition-colors">Annuler</button>
                   <button onClick={() => setIsDeleteModalOpen(false)} className="flex-1 py-4 rounded-2xl font-bold text-[13px] uppercase tracking-wider text-white bg-danger shadow-lg shadow-danger/20 hover:brightness-110 transition-all">Supprimer</button>
+               </div>
+            </motion.div>
+          </>
+        )}
+        {isHistoryOpen && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsHistoryOpen(false)} className="fixed inset-0 bg-forest/60 backdrop-blur-md z-[60]" />
+            <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 30, stiffness: 200 }} className="fixed inset-y-0 right-0 w-full max-w-md bg-surface z-[70] flex flex-col shadow-2xl border-l border-border">
+               <div className="p-8 border-b border-border flex items-center justify-between bg-surface-2/50">
+                  <h2 className="text-xl font-normal text-forest font-diplomata">Historique des Commandes</h2>
+                  <button onClick={() => setIsHistoryOpen(false)} className="w-10 h-10 bg-surface rounded-full flex items-center justify-center text-forest hover:bg-forest hover:text-white transition-colors border border-border"><X size={20} /></button>
+               </div>
+               <div className="flex-1 overflow-y-auto p-8 space-y-4 custom-scrollbar">
+                  {[...MOCK_ORDERS].reverse().map(order => (
+                     <div key={`hist-${order.id}`} className="bg-surface-2 rounded-2xl p-5 border border-border shadow-sm">
+                        <div className="flex justify-between items-start mb-3">
+                           <div>
+                              <span className="text-xs font-black text-forest">Commande {order.id}</span>
+                              <div className="text-[10px] text-ink-muted uppercase font-black mt-1">Table {order.tableNumber} • Hier, 14:30</div>
+                           </div>
+                           <span className="text-[10px] font-black text-success uppercase tracking-widest bg-success/10 px-2 py-1 rounded-md">Servie</span>
+                        </div>
+                        <div className="text-xs font-medium text-forest/70">{order.items.map(i => `${i.quantity}x ${i.name}`).join(', ')}</div>
+                        <div className="mt-4 pt-3 border-t border-border flex justify-between items-center">
+                           <span className="text-[10px] font-black text-ink-muted uppercase">Total</span>
+                           <span className="text-sm font-bold text-sage">{order.total} FCFA</span>
+                        </div>
+                     </div>
+                  ))}
                </div>
             </motion.div>
           </>
