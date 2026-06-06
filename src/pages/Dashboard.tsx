@@ -612,23 +612,23 @@ export default function Dashboard() {
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                          <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Nom du Restaurant</label>
-                         <input type="text" defaultValue={restaurant.name} className="input-premium w-full" />
+                         <input type="text" defaultValue={restaurant.name} className="input-premium px-6 w-full" />
                       </div>
                       <div className="space-y-2">
                          <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Type d'établissement</label>
-                         <input type="text" defaultValue={restaurant.type} className="input-premium w-full" />
+                         <input type="text" defaultValue={restaurant.type} className="input-premium px-6 w-full" />
                       </div>
                       <div className="md:col-span-2 space-y-2">
                          <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Description courte</label>
-                         <textarea defaultValue={restaurant.description} rows={3} className="input-premium w-full resize-none py-4"></textarea>
+                         <textarea defaultValue={restaurant.description} rows={3} className="input-premium px-6 w-full resize-none py-4"></textarea>
                       </div>
                       <div className="space-y-2">
                          <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Téléphone</label>
-                         <input type="text" defaultValue={restaurant.phone} className="input-premium w-full" />
+                         <input type="text" defaultValue={restaurant.phone} className="input-premium px-6 w-full" />
                       </div>
                       <div className="space-y-2">
                          <label className="text-[10px] font-black uppercase tracking-widest text-ink-muted">Heures d'ouverture</label>
-                         <input type="text" defaultValue={restaurant.openingHours} className="input-premium w-full" />
+                         <input type="text" defaultValue={restaurant.openingHours} className="input-premium px-6 w-full" />
                       </div>
                    </div>
 
