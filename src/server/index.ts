@@ -34,4 +34,4 @@ AppDataSource.initialize()
       console.log(`🚀 Backend listening on http://localhost:${PORT}`);
     });
   })
-  .catch((error) => console.error('Error during Data Source initialization:', error));
+  .catch((error: Error) => console.error('Error during Data Source initialization:', error));

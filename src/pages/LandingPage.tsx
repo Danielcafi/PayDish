@@ -81,9 +81,9 @@ export default function LandingPage() {
           className="fixed inset-0 z-40 lg:hidden bg-surface flex flex-col pt-32 px-6"
         >
           <div className="flex flex-col gap-8 text-center">
-            <a href="#solutions" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-normal text-forest font-diplomata">Nos Atouts</a>
-            <a href="#experience" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-normal text-forest font-diplomata">L'Expérience</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-normal text-forest font-diplomata">Contact</a>
+            <a href="#solutions" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-bold text-forest">Nos Atouts</a>
+            <a href="#experience" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-bold text-forest">L'Expérience</a>
+            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-2xl font-bold text-forest">Contact</a>
             <div className="h-[1px] bg-border w-1/4 mx-auto my-4"></div>
             <Link to="/auth" onClick={() => setMobileMenuOpen(false)} className="text-xl font-bold text-ink">Connexion</Link>
             <Link to="/auth?signup=true" onClick={() => setMobileMenuOpen(false)} className="btn-primary py-6">
@@ -250,7 +250,7 @@ export default function LandingPage() {
               </div>
               {/* Floating Overlay */}
               <div className="absolute top-1/2 -right-16 bg-forest text-white p-8 rounded-[2rem] shadow-2xl hidden xl:block">
-                 <p className="text-sage font-normal text-4xl mb-1 font-diplomata">+15%</p>
+                 <p className="text-sage font-extrabold text-4xl mb-1">+15%</p>
                  <p className="text-[10px] font-black uppercase tracking-widest text-white/50">Ventes Additionnelles</p>
               </div>
             </motion.div>

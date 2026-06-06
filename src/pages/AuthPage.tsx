@@ -44,17 +44,17 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen-dynamic bg-surface-2 flex flex-col items-center justify-center p-6 relative overflow-hidden transition-colors duration-500">
+    <div className="min-h-screen-dynamic bg-surface-2 flex flex-col items-center justify-center px-4 py-8 sm:p-6 relative overflow-hidden transition-colors duration-500">
       {/* Navigation Bar */}
       <nav className="absolute top-0 left-0 right-0 p-8 flex items-center justify-between z-50">
         <Link to="/" className="flex items-center gap-3">
-          <img src="/logo.png" alt="PayDish" className="h-10 w-auto" />
-          <span className="text-xl font-normal text-forest uppercase font-diplomata">PayDish</span>
+          <img src="/logo.png" alt="PayDish" className="h-8 sm:h-10 w-auto" />
+          <span className="text-lg sm:text-xl font-normal text-forest uppercase font-diplomata">PayDish</span>
         </Link>
         <ThemeToggle />
       </nav>
 
-      <div className="w-full max-w-[480px] z-10">
+      <div className="w-full max-w-[480px] z-10 px-0">
         <AnimatePresence mode="wait">
           {onboardingStep === 0 && (
             <motion.div
@@ -62,13 +62,13 @@ export default function AuthPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-surface-2 rounded-[2.5rem] p-10 md:p-12 border border-border"
+              className="bg-surface-2 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 md:p-12 border border-border"
             >
-              <div className="text-center mb-10">
-                <h2 className="text-3xl font-normal text-forest mb-2 tracking-tight font-diplomata">
+              <div className="text-center mb-8 sm:mb-10">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-forest mb-2 tracking-tight leading-tight">
                   {isSignup ? 'Créer un compte' : 'Bon retour'}
                 </h2>
-                <p className="text-ink-muted font-medium text-sm">
+                <p className="text-ink-muted font-medium text-xs sm:text-sm leading-relaxed max-w-[300px] mx-auto">
                   {isSignup ? 'Rejoignez les meilleurs restaurateurs du Bénin.' : 'Accédez à votre tableau de bord PayDish.'}
                 </p>
               </div>
@@ -97,19 +97,20 @@ export default function AuthPage() {
 
                 <button 
                   disabled={loading} 
-                  className="w-full btn-primary py-5 flex items-center justify-center gap-3 mt-8"
+                  className="w-full btn-primary py-4 sm:py-5 flex items-center justify-center gap-2 sm:gap-3 mt-6 sm:mt-8 text-xs sm:text-[13px]"
                 >
                   {loading ? 'Chargement...' : isSignup ? 'Continuer' : 'Se connecter'}
-                  {!loading && <ArrowRight size={18} />}
+                  {!loading && <ArrowRight size={16} className="sm:hidden" />}
+                  {!loading && <ArrowRight size={18} className="hidden sm:block" />}
                 </button>
               </form>
 
-              <div className="mt-8 text-center">
+              <div className="mt-6 sm:mt-8 text-center">
                 <button 
                   onClick={() => setIsSignup(!isSignup)}
-                  className="text-sm font-bold text-ink-muted hover:text-sage transition-colors"
+                  className="text-xs sm:text-sm font-bold text-ink-muted hover:text-sage transition-colors leading-relaxed"
                 >
-                  {isSignup ? 'Déjà un compte ? Connectez-vous' : 'Pas encore de compte ? S\'inscrire'}
+                  {isSignup ? 'Déjà un compte ? Connectez-vous' : "Pas encore de compte ? S'inscrire"}
                 </button>
               </div>
             </motion.div>
@@ -131,7 +132,7 @@ export default function AuthPage() {
       </div>
       
       {/* Subtle bottom text */}
-      <p className="mt-12 mb-8 text-[10px] font-black uppercase tracking-[0.3em] text-ink-muted">
+      <p className="mt-8 sm:mt-12 mb-6 sm:mb-8 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-ink-muted text-center">
         © 2026 PayDish Technologies S.A.
       </p>
     </div>
@@ -140,10 +141,10 @@ export default function AuthPage() {
 
 function OnboardingStep1({ onNext }: { onNext: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-surface-2 rounded-[2.5rem] p-12 border border-border">
-      <div className="text-center mb-10">
+    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-surface-2 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 md:p-12 border border-border">
+      <div className="text-center mb-8 sm:mb-10">
         <span className="section-label">Étape 1 sur 3</span>
-        <h2 className="text-3xl font-normal text-forest mb-2 tracking-tight font-diplomata">Profil Restaurant</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-forest mb-2 tracking-tight leading-tight">Profil Restaurant</h2>
       </div>
       <div className="space-y-8">
         <div className="flex flex-col items-center">
@@ -166,14 +167,14 @@ function OnboardingStep1({ onNext }: { onNext: () => void }) {
 
 function OnboardingStep2({ onNext, onBack }: { onNext: () => void, onBack: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-surface-2 rounded-[2.5rem] p-12 border border-border">
+    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-surface-2 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 md:p-12 border border-border">
       <button onClick={onBack} className="flex items-center gap-2 text-ink-muted hover:text-sage transition-colors mb-8 text-xs font-bold uppercase tracking-widest">
         <ChevronLeft size={16} /> Retour
       </button>
-      <div className="text-center mb-10">
+      <div className="text-center mb-8 sm:mb-10">
         <span className="section-label">Étape 2 sur 3</span>
-        <h2 className="text-3xl font-normal text-forest mb-2 tracking-tight font-diplomata">Configuration Menu</h2>
-        <p className="text-ink-muted text-sm font-medium">Vous pourrez finaliser votre menu complet plus tard.</p>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-forest mb-2 tracking-tight leading-tight">Configuration Menu</h2>
+        <p className="text-ink-muted text-xs sm:text-sm font-medium leading-relaxed">Vous pourrez finaliser votre menu complet plus tard.</p>
       </div>
       
       <div className="space-y-4 mb-10">
@@ -194,13 +195,13 @@ function OnboardingStep2({ onNext, onBack }: { onNext: () => void, onBack: () =>
 
 function OnboardingStep3({ onFinish }: { onFinish: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-surface-2 rounded-[2.5rem] p-12 border border-border text-center">
+    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-surface-2 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 md:p-12 border border-border text-center">
       <div className="w-20 h-20 bg-success/10 text-success rounded-full flex items-center justify-center mx-auto mb-8">
         <CheckCircle2 size={40} />
       </div>
       
-      <h2 className="text-3xl font-normal text-forest mb-4 tracking-tight font-diplomata">Tout est prêt !</h2>
-      <p className="text-ink-muted font-medium mb-10">Votre restaurant est maintenant membre du réseau PayDish. Commençons à servir vos clients.</p>
+      <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-forest mb-3 sm:mb-4 tracking-tight leading-tight">Tout est prêt !</h2>
+      <p className="text-ink-muted font-medium text-xs sm:text-sm leading-relaxed mb-8 sm:mb-10 max-w-[280px] mx-auto">Votre restaurant est maintenant membre du réseau PayDish. Commençons à servir vos clients.</p>
       
       <div className="p-6 bg-forest text-white rounded-3xl mb-10 flex items-center gap-5 text-left border border-white/5">
         <div className="w-12 h-12 bg-surface-2 rounded-xl flex items-center justify-center text-forest">

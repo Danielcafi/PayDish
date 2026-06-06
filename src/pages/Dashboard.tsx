@@ -123,7 +123,7 @@ export default function Dashboard() {
         {/* Header */}
         <header className="sticky top-0 z-30 bg-surface-2/80 backdrop-blur-md px-10 py-6 flex items-center justify-between border-b border-border transition-colors duration-500">
           <div>
-            <h1 className="text-2xl font-normal text-forest dark:text-cream tracking-tight font-diplomata">Bienvenue, Adjoua.</h1>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-forest dark:text-cream tracking-tight">Bienvenue, Adjoua.</h1>
             <p className="text-ink-muted text-[10px] font-black uppercase tracking-[0.3em] mt-1">Samedi 2 Mai 2026</p>
           </div>
           <div className="flex items-center gap-4">
@@ -204,7 +204,7 @@ export default function Dashboard() {
                            {stat.trend && <span className={`text-[10px] font-black ${stat.color}`}>{stat.trend}</span>}
                         </div>
                         <p className="text-[10px] font-black uppercase tracking-widest text-ink-muted mb-1">{stat.label}</p>
-                        <h3 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">{stat.value}</h3>
+                        <h3 className="text-2xl md:text-3xl font-extrabold text-forest dark:text-cream">{stat.value}</h3>
                      </div>
                    ))}
                 </div>
@@ -214,7 +214,7 @@ export default function Dashboard() {
                    <div className="xl:col-span-2 bg-surface-2 rounded-[2.5rem] border border-border p-10 relative overflow-hidden">
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                          <div>
-                            <h3 className="text-xl font-normal text-forest dark:text-cream font-diplomata">Analyse des Revenus</h3>
+                            <h3 className="text-lg md:text-xl font-bold text-forest dark:text-cream tracking-tight">Analyse des Revenus</h3>
                             <p className="text-xs font-medium text-ink-muted mt-1">Comparaison des 7 derniers jours</p>
                          </div>
                          <div className="flex gap-2">
@@ -245,7 +245,7 @@ export default function Dashboard() {
                          <div className="w-12 h-12 bg-sage/20 rounded-2xl flex items-center justify-center text-sage mb-8">
                             <Sparkles size={24} />
                          </div>
-                         <h3 className="text-2xl font-normal mb-4 leading-tight font-diplomata">Insight PayDish AI</h3>
+                         <h3 className="text-xl md:text-2xl font-bold mb-4 leading-tight">Insight PayDish AI</h3>
                          <p className="text-white/60 text-sm font-medium leading-relaxed mb-10">
                             Le plat <span className="text-sage font-bold">"Atassi Royale"</span> performe 40% mieux le samedi. Pensez à augmenter votre stock de piment noir.
                          </p>
@@ -260,7 +260,7 @@ export default function Dashboard() {
                 {/* Table Section */}
                 <div className="bg-surface-2 rounded-[2.5rem] border border-border overflow-hidden">
                    <div className="p-8 border-b border-border flex items-center justify-between">
-                      <h3 className="text-xl font-normal text-forest dark:text-cream font-diplomata">Commandes Récentes</h3>
+                      <h3 className="text-lg md:text-xl font-bold text-forest dark:text-cream tracking-tight">Commandes Récentes</h3>
                       <button className="text-[10px] font-black text-sage uppercase tracking-widest border-b-2 border-sage/20 hover:border-sage transition-all">Tout l'historique</button>
                    </div>
                    <div className="overflow-x-auto">
@@ -339,7 +339,7 @@ export default function Dashboard() {
                         </div>
                         <div className="p-8">
                            <div className="flex justify-between items-start mb-2">
-                              <h4 className="text-xl font-normal text-forest font-diplomata">{item.name}</h4>
+                              <h4 className="text-lg font-bold text-forest">{item.name}</h4>
                               <span className="font-bold text-sage">{item.price.toLocaleString()} FCFA</span>
                            </div>
                            <p className="text-xs text-ink-muted font-medium mb-6 line-clamp-2 leading-relaxed">{item.description}</p>
@@ -365,7 +365,7 @@ export default function Dashboard() {
                 className="space-y-10"
               >
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Gestion des Commandes</h2>
+                  <h2 className="text-xl md:text-2xl font-bold text-forest dark:text-cream tracking-tight">Gestion des Commandes</h2>
                   <div className="flex gap-2 relative">
                     <button onClick={() => setIsHistoryOpen(true)} className="px-5 py-2.5 bg-surface-2 border border-border text-ink-muted rounded-xl text-[10px] font-black uppercase tracking-widest hover:text-forest transition-colors">Historique</button>
                     <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="px-5 py-2.5 bg-forest text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2"><Filter size={14} /> Filtrer</button>
@@ -479,7 +479,7 @@ export default function Dashboard() {
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                    <div>
-                      <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Menu QR Code</h2>
+                      <h2 className="text-xl md:text-2xl font-bold text-forest dark:text-cream tracking-tight">Menu QR Code</h2>
                       <p className="text-xs font-medium text-ink-muted mt-1">Imprimez ce QR Code unique. Vos clients le scanneront pour commander et payer.</p>
                    </div>
                 </div>
@@ -505,7 +505,7 @@ export default function Dashboard() {
 
                    <div className="flex-1 space-y-8 text-center md:text-left relative z-10">
                       <div>
-                         <h3 className="text-3xl font-normal text-forest font-diplomata mb-4">Un seul scan pour commander & payer.</h3>
+                         <h3 className="text-2xl md:text-3xl font-bold text-forest mb-4 leading-tight">Un seul scan pour commander & payer.</h3>
                          <p className="text-sm font-medium text-ink-muted leading-relaxed">
                            Ce QR Code est universel. Placez-le sur toutes vos tables, au comptoir, ou à l'entrée. Vos clients n'ont plus besoin d'attendre la carte ou l'addition.
                          </p>
@@ -539,7 +539,7 @@ export default function Dashboard() {
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                    <div>
-                      <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Finance & Transactions</h2>
+                      <h2 className="text-xl md:text-2xl font-bold text-forest dark:text-cream tracking-tight">Finance & Transactions</h2>
                       <p className="text-xs font-medium text-ink-muted mt-1">Suivez vos encaissements Mobile Money et espèces.</p>
                    </div>
                    <button onClick={() => alert("Génération du rapport CSV en cours...")} className="px-5 py-2.5 bg-surface-2 border border-border text-ink-muted rounded-xl text-[10px] font-black uppercase tracking-widest hover:text-forest transition-colors flex items-center gap-2">
@@ -551,7 +551,7 @@ export default function Dashboard() {
                    <div className="bg-forest text-white p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
                       <div className="relative z-10">
                          <p className="text-[10px] font-black uppercase tracking-widest text-white/60 mb-2">Solde Disponible</p>
-                         <h3 className="text-4xl font-normal font-diplomata mb-6">450,000 <span className="text-xl opacity-50">FCFA</span></h3>
+                         <h3 className="text-3xl md:text-4xl font-extrabold mb-6">450,000 <span className="text-xl opacity-50">FCFA</span></h3>
                          <button onClick={() => alert("Redirection vers la passerelle bancaire...")} className="w-full bg-white text-forest py-3 rounded-xl font-black text-[11px] uppercase tracking-widest shadow-lg hover:bg-sage transition-colors">
                             Retirer vers Banque
                          </button>
@@ -597,7 +597,7 @@ export default function Dashboard() {
                 className="max-w-3xl space-y-10 pb-10"
               >
                 <div>
-                   <h2 className="text-2xl font-normal text-forest dark:text-cream font-diplomata">Paramètres du Restaurant</h2>
+                   <h2 className="text-xl md:text-2xl font-bold text-forest dark:text-cream tracking-tight">Paramètres du Restaurant</h2>
                    <p className="text-xs font-medium text-ink-muted mt-1">Gérez les informations publiques de votre établissement.</p>
                 </div>
 
@@ -662,7 +662,7 @@ export default function Dashboard() {
             >
               <div className="p-8 flex-1">
                 <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-2xl font-normal text-forest font-diplomata">
+                  <h2 className="text-xl md:text-2xl font-bold text-forest">
                     {editingPlate ? 'Modifier le plat' : 'Nouveau Plat'}
                   </h2>
                   <button onClick={() => setIsPlateModalOpen(false)} className="w-10 h-10 bg-surface-2 rounded-full flex items-center justify-center text-forest hover:bg-forest hover:text-white transition-colors"><X size={20} /></button>
@@ -743,7 +743,7 @@ export default function Dashboard() {
                <div className="w-16 h-16 bg-danger/10 text-danger rounded-2xl flex items-center justify-center mb-6">
                   <Trash2 size={32} />
                </div>
-               <h3 className="text-2xl font-normal text-forest font-diplomata mb-4">Supprimer ce plat ?</h3>
+               <h3 className="text-xl md:text-2xl font-bold text-forest mb-4">Supprimer ce plat ?</h3>
                <p className="text-sm font-medium text-ink-muted mb-8">
                   Êtes-vous sûr de vouloir supprimer <span className="font-bold text-forest">"{deletingPlate?.name}"</span> ? Cette action est irréversible.
                </p>
@@ -759,7 +759,7 @@ export default function Dashboard() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsHistoryOpen(false)} className="fixed inset-0 bg-forest/60 backdrop-blur-md z-[60]" />
             <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 30, stiffness: 200 }} className="fixed inset-y-0 right-0 w-full max-w-md bg-surface z-[70] flex flex-col shadow-2xl border-l border-border">
                <div className="p-8 border-b border-border flex items-center justify-between bg-surface-2/50">
-                  <h2 className="text-xl font-normal text-forest font-diplomata">Historique des Commandes</h2>
+                  <h2 className="text-lg md:text-xl font-bold text-forest tracking-tight">Historique des Commandes</h2>
                   <button onClick={() => setIsHistoryOpen(false)} className="w-10 h-10 bg-surface rounded-full flex items-center justify-center text-forest hover:bg-forest hover:text-white transition-colors border border-border"><X size={20} /></button>
                </div>
                <div className="flex-1 overflow-y-auto p-8 space-y-4 custom-scrollbar">
